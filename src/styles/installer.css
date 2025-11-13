@@ -1,0 +1,80 @@
+.installer-root {
+  background: #f6f7fb;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 60px 20px;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+.installer-card {
+  background: #ffffff;
+  padding: 40px 50px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  max-width: 800px;
+  width: 100%;
+  color: #111827;
+}
+
+.installer-card h1 {
+  color: #2563eb;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin-bottom: 24px;
+  font-size: 1rem;
+}
+
+.install-steps {
+  padding-left: 20px;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.install-steps li {
+  margin-bottom: 12px;
+}
+
+.install-steps ul {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 20px;
+}
+
+.download-btn {
+  display: inline-block;
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+}
+
+.download-btn:hover {
+  background: #1e40af;
+}
+
+.download-btn.secondary {
+  background: #0ea5a4;
+  margin-left: 16px;
+}
+
+.download-btn.secondary:hover {
+  background: #0c8d8d;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}

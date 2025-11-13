@@ -1,0 +1,97 @@
+/* auth.css */
+.auth-root{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: linear-gradient(180deg, #eef2ff 0%, rgba(236,253,245,0.6) 100%);
+  padding:40px 20px;
+}
+
+.auth-card{
+  width:100%;
+  max-width:480px;
+  background:var(--card);
+  border-radius:16px;
+  padding:28px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(16,24,40,0.04);
+}
+
+.auth-toggle{
+  display:flex;
+  gap:8px;
+  background:rgba(99,102,241,0.06);
+  padding:6px;
+  border-radius:12px;
+}
+
+.toggle-btn{
+  flex:1;
+  padding:10px 12px;
+  background:transparent;
+  border:0;
+  border-radius:10px;
+  font-weight:600;
+  cursor:pointer;
+  color:#374151;
+}
+.toggle-btn.active{
+  background: linear-gradient(90deg,#2563eb,#0ea5a4);
+  color:white;
+  box-shadow:0 6px 18px rgba(37,99,235,0.12);
+}
+
+.auth-header{ text-align:center; margin:18px 0 8px;}
+.auth-header h2{ margin:0; font-size:22px; }
+.auth-header .muted{ font-size:14px; color:var(--muted); margin-top:6px }
+
+.auth-form{ margin-top:10px; display:flex; flex-direction:column; gap:12px; }
+
+.field .label{ display:block; margin-bottom:6px; font-size:13px; color:#374151; }
+.input-wrap{ position:relative; display:flex; align-items:center; background:#fbfdff; border:1px solid rgba(16,24,40,0.04); padding:10px; border-radius:10px; }
+.input-wrap input{ border:0; outline:none; padding:8px 12px; flex:1; background:transparent; font-size:14px; color:#111827 }
+.input-wrap .icon{ width:18px; height:18px; color:#9ca3af; margin-right:8px; flex:0 0 18px }
+.eye-btn{ background:transparent; border:0; cursor:pointer; color:#6b7280; display:flex; align-items:center; padding:0 6px; }
+
+.terms{ display:flex; gap:10px; align-items:flex-start; font-size:13px; color:var(--muted) }
+.terms input{ margin-top:4px }
+
+.submit-btn{
+  margin-top:6px;
+  width:100%;
+  background:linear-gradient(90deg,#2563eb,#0ea5a4);
+  color:white;
+  border:0;
+  padding:12px;
+  border-radius:12px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  align-items:center;
+  font-weight:700;
+  cursor:pointer;
+}
+.submit-btn .arrow{ width:16px; height:16px }
+
+.auth-footer{ margin-top:14px; text-align:center; color:var(--muted) }
+.link-btn{ background:none; border:0; color:var(--primary); cursor:pointer; font-weight:600 }
+
+/* Hide Register on Mobile */
+@media (max-width: 768px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
+
+/* Device Tip Styling */
+.device-tip {
+  font-size: 0.8rem;
+  color: #374151;
+  background: #f1f5f9;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
