@@ -38,10 +38,12 @@ export default function FileSettings() {
   const saveConfig = async () => {
     setStatus("Saving...");
     try {
+      const deviceId = sessionStorage.getItem("deviceName") || "default";
       const res = await fetch(`${API_URL}/api/file-monitor/state`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          device_id: deviceId,
           monitor_folders: state.monitor_folders,
           backup_folder: backupFolder,
         }),
@@ -81,13 +83,16 @@ export default function FileSettings() {
   const startMonitoring = async () => {
     setStatus("Starting monitoring...");
     try {
+      const deviceId = sessionStorage.getItem("deviceName") || "default";
       const res = await fetch(`${API_URL}/api/file-monitor/start`, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ device_id: deviceId }),
       });
       if (res.ok) {
-        setStatus("Monitoring started!");
+        setStatus("Signal sent! Desktop agent will start monitoring within 60 seconds.");
         setMonitoring(true);
-        setTimeout(() => setStatus(""), 3000);
+        setTimeout(() => setStatus(""), 5000);
       } else {
         setStatus("Failed to start");
       }
@@ -99,13 +104,16 @@ export default function FileSettings() {
   const stopMonitoring = async () => {
     setStatus("Stopping monitoring...");
     try {
+      const deviceId = sessionStorage.getItem("deviceName") || "default";
       const res = await fetch(`${API_URL}/api/file-monitor/stop`, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ device_id: deviceId }),
       });
       if (res.ok) {
-        setStatus("Monitoring stopped!");
+        setStatus("Signal sent! Desktop agent will stop monitoring within 60 seconds.");
         setMonitoring(false);
-        setTimeout(() => setStatus(""), 3000);
+        setTimeout(() => setStatus(""), 5000);
       } else {
         setStatus("Failed to stop");
       }
