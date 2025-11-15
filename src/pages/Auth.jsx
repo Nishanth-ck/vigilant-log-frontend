@@ -172,15 +172,15 @@ export default function Auth() {
                 name="deviceName"
                 value={formData.deviceName}
                 onChange={handleInputChange}
-                placeholder="Enter your exact device name"
-                required
+                placeholder="Enter your exact device name (optional)"
               />
             </div>
           </label>
 
           <p className="device-tip">
-            💡 To find your Device Name: Go to <b>Settings → System → About</b>{" "}
-            → see your <b>Device Name</b>. It’s case-sensitive.
+            💡 If you want per-device configs, set Device Name to match{" "}
+            <b>Settings → System → About → Device name</b>. Otherwise, you can
+            leave it blank and the system will use a shared default device.
           </p>
 
           {/* Terms of Service (Register only) */}

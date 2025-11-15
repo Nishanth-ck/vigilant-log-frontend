@@ -4,7 +4,8 @@ import { Play, StopCircle, FolderPlus, Trash2, Save } from "lucide-react";
 import "../styles/dashboard.css";
 
 // File Monitoring API URL - configure for your deployed backend
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL =
+  import.meta.env.VITE_API_URL || "https://vigilantlog-backend.onrender.com";
 
 export default function FileSettings() {
   const [state, setState] = useState({
