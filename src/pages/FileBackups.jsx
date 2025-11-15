@@ -16,8 +16,10 @@ export default function FileBackups() {
   const fetchBackups = async () => {
     setLoading(true);
     try {
+      const deviceId = sessionStorage.getItem("deviceName") || "default";
+
       // Fetch local backups
-      const localRes = await fetch(`${API_URL}/api/file-monitor/backups/local`);
+      const localRes = await fetch(`${API_URL}/api/file-monitor/backups/local?deviceId=${deviceId}`);
       if (localRes.ok) {
         const localData = await localRes.json();
         setLocalFiles(localData.files || []);
