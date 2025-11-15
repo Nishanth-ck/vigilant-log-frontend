@@ -174,7 +174,27 @@ export default function FileBackups() {
           )}
 
           {localFiles.length === 0 ? (
-            <p style={{ color: "#999" }}>No local backups found</p>
+            <div style={{ 
+              padding: "20px", 
+              background: "#f0f9ff", 
+              borderRadius: "8px",
+              border: "1px solid #7dd3fc" 
+            }}>
+              <p style={{ margin: "0 0 12px 0", color: "#0369a1", fontWeight: 600 }}>
+                📁 Local backups are stored on your computer
+              </p>
+              <p style={{ margin: "0 0 8px 0", color: "#0c4a6e" }}>
+                To view your local backup files:
+              </p>
+              <ol style={{ margin: 0, paddingLeft: "20px", color: "#0c4a6e" }}>
+                <li>Open File Explorer (Windows) or Finder (Mac)</li>
+                <li>Navigate to your configured backup folder</li>
+                <li>Files will be named: <code style={{ background: "#e0f2fe", padding: "2px 6px", borderRadius: "3px" }}>OriginalName_BACKUP</code></li>
+              </ol>
+              <p style={{ margin: "12px 0 0 0", color: "#64748b", fontSize: "14px" }}>
+                💡 Check the backup folder path in <a href="/file-settings" style={{ color: "#0ea5a4", fontWeight: 600 }}>File Settings</a>
+              </p>
+            </div>
           ) : (
             <div style={{ overflowX: "auto" }}>
               <table

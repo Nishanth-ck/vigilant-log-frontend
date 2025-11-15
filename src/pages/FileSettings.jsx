@@ -19,7 +19,8 @@ export default function FileSettings() {
 
   const fetchState = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/file-monitor/state`);
+      const deviceId = sessionStorage.getItem("deviceName") || "default";
+      const res = await fetch(`${API_URL}/api/file-monitor/state?deviceId=${deviceId}`);
       if (res.ok) {
         const data = await res.json();
         setState(data.state || { monitor_folders: [], backup_folder: "", startMonitoring: false });
@@ -46,16 +47,23 @@ export default function FileSettings() {
           device_id: deviceId,
           monitor_folders: state.monitor_folders,
           backup_folder: backupFolder,
+          startMonitoring: state.startMonitoring,
         }),
       });
       if (res.ok) {
+        const data = await res.json();
         setStatus("Configuration saved!");
-        fetchState();
+        // Update local state with saved data to keep UI in sync
+        if (data.state) {
+          setState(data.state);
+          setBackupFolder(data.state.backup_folder || "");
+        }
         setTimeout(() => setStatus(""), 3000);
       } else {
         setStatus("Failed to save");
       }
     } catch (err) {
+      console.error("Save error:", err);
       setStatus("Error saving");
     }
   };
@@ -176,6 +184,28 @@ export default function FileSettings() {
           </div>
         )}
 
+        {/* Info Box */}
+        <div
+          style={{
+            margin: "20px",
+            padding: "16px",
+            background: "#f0f9ff",
+            border: "1px solid #7dd3fc",
+            borderRadius: "8px",
+          }}
+        >
+          <h4 style={{ margin: "0 0 8px 0", color: "#0369a1" }}>
+            📋 How It Works
+          </h4>
+          <ul style={{ margin: 0, paddingLeft: "20px", color: "#0c4a6e" }}>
+            <li>Configure backup and monitor folders below</li>
+            <li>Click "Save Configuration" to persist your settings</li>
+            <li>Start monitoring - your desktop agent will sync settings within 60 seconds</li>
+            <li>Files will be backed up locally to your backup folder</li>
+            <li>View local backups by opening the backup folder on your computer</li>
+          </ul>
+        </div>
+
         {/* Monitoring Control */}
         <section className="panel" style={{ margin: "20px" }}>
           <h3>Monitoring Control</h3>
@@ -225,8 +255,19 @@ export default function FileSettings() {
         <section className="panel" style={{ margin: "20px" }}>
           <h3>Backup Folder</h3>
           <p style={{ color: "#666", marginBottom: "12px" }}>
-            Where backup files will be saved
+            Where backup files will be saved on your computer (local storage)
           </p>
+          <div style={{ 
+            background: "#fffbeb", 
+            border: "1px solid #fcd34d", 
+            borderRadius: "6px", 
+            padding: "12px", 
+            marginBottom: "12px" 
+          }}>
+            <p style={{ margin: 0, fontSize: "14px", color: "#92400e" }}>
+              💡 <strong>Tip:</strong> Use an absolute path like <code>C:\Users\YourName\VigilantLog_Backups</code>
+            </p>
+          </div>
           <div style={{ display: "flex", gap: "12px", marginTop: "16px" }}>
             <input
               type="text"
@@ -268,6 +309,17 @@ export default function FileSettings() {
           <p style={{ color: "#666", marginBottom: "12px" }}>
             Add folders to watch for file changes
           </p>
+          <div style={{ 
+            background: "#fffbeb", 
+            border: "1px solid #fcd34d", 
+            borderRadius: "6px", 
+            padding: "12px", 
+            marginBottom: "12px" 
+          }}>
+            <p style={{ margin: 0, fontSize: "14px", color: "#92400e" }}>
+              💡 <strong>Tip:</strong> Use absolute paths like <code>C:\Users\YourName\Documents\Important</code>
+            </p>
+          </div>
 
           <div style={{ display: "flex", gap: "12px", marginTop: "16px" }}>
             <input
@@ -375,4 +427,5 @@ export default function FileSettings() {
     </div>
   );
 }
+
 
