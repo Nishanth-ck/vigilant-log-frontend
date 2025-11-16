@@ -28,7 +28,6 @@ export default function FileBackups() {
     try {
       const deviceId = sessionStorage.getItem("deviceName") || "default";
 
-      // Fetch local backups
       const localRes = await fetch(
         `${FILE_MONITORING_API_URL}/api/file-monitor/backups/local?deviceId=${deviceId}`
       );
@@ -37,7 +36,6 @@ export default function FileBackups() {
         setLocalFiles(localData.files || []);
       }
 
-      // Fetch cloud backups
       const cloudRes = await fetch(`${FILE_MONITORING_API_URL}/api/file-monitor/backups/cloud`);
       if (cloudRes.ok) {
         const cloudData = await cloudRes.json();
@@ -119,38 +117,46 @@ export default function FileBackups() {
   };
 
   const statusColors = {
-    success: "bg-emerald-50 border-emerald-200 text-emerald-800",
-    error: "bg-red-50 border-red-200 text-red-800",
-    info: "bg-blue-50 border-blue-200 text-blue-800",
-  };
-
-  const statusIcons = {
-    success: <CheckCircle2 className="w-5 h-5" />,
-    error: <AlertCircle className="w-5 h-5" />,
-    info: <RefreshCw className="w-5 h-5 animate-spin" />,
+    success: { bg: "#ecfdf5", border: "#10b981", color: "#065f46" },
+    error: { bg: "#fef2f2", border: "#ef4444", color: "#991b1b" },
+    info: { bg: "#eff6ff", border: "#3b82f6", color: "#1e40af" },
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50 to-pink-50">
+    <div style={{ minHeight: "100vh", background: "linear-gradient(to bottom right, #f9fafb, #fce7f3, #f3e8ff)" }}>
       {/* Top Navbar */}
-      <nav className="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 shadow-sm z-50 flex items-center justify-between px-6">
-        <div className="flex items-center gap-3">
-          <h1 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+      <nav style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        height: "64px",
+        background: "white",
+        borderBottom: "1px solid #e5e7eb",
+        boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+        zIndex: 50,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "0 24px"
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <h1 style={{ fontSize: "20px", fontWeight: "bold", background: "linear-gradient(to right, #a855f7, #ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0 }}>
             VigilantLog
           </h1>
-          <span className="text-sm text-gray-400">|</span>
-          <span className="text-sm font-medium text-gray-600">File Backups</span>
+          <span style={{ fontSize: "14px", color: "#9ca3af" }}>|</span>
+          <span style={{ fontSize: "14px", fontWeight: 500, color: "#4b5563" }}>File Backups</span>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-50 border border-blue-200">
-            <HardDrive className="w-4 h-4 text-blue-600" />
-            <span className="text-xs font-semibold text-blue-700">
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "6px 12px", borderRadius: "8px", background: "#dbeafe", border: "1px solid #93c5fd" }}>
+            <HardDrive size={16} color="#2563eb" />
+            <span style={{ fontSize: "12px", fontWeight: 600, color: "#1e40af" }}>
               {localFiles.length} Local
             </span>
           </div>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-purple-50 border border-purple-200">
-            <Cloud className="w-4 h-4 text-purple-600" />
-            <span className="text-xs font-semibold text-purple-700">
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "6px 12px", borderRadius: "8px", background: "#f3e8ff", border: "1px solid #d8b4fe" }}>
+            <Cloud size={16} color="#a855f7" />
+            <span style={{ fontSize: "12px", fontWeight: 600, color: "#7e22ce" }}>
               {cloudFiles.length} Cloud
             </span>
           </div>
@@ -158,70 +164,54 @@ export default function FileBackups() {
       </nav>
 
       {/* Sidebar */}
-      <aside className="fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 bg-white border-r border-gray-200 shadow-lg">
-        <div className="p-6">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+      <aside style={{
+        position: "fixed",
+        top: "64px",
+        left: 0,
+        height: "calc(100vh - 64px)",
+        width: "256px",
+        background: "white",
+        borderRight: "1px solid #e5e7eb",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+      }}>
+        <div style={{ padding: "24px" }}>
+          <h1 style={{ fontSize: "24px", fontWeight: "bold", background: "linear-gradient(to right, #a855f7, #ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0 }}>
             VigilantLog
           </h1>
         </div>
-        <nav className="px-4 space-y-1">
-          <a
-            href="/dashboard"
-            className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
-          >
-            Dashboard
-          </a>
-          <a
-            href="/system-health"
-            className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
-          >
-            System Health
-          </a>
-          <a
-            href="/analysis"
-            className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
-          >
-            Analysis
-          </a>
-          <a
-            href="/file-backups"
-            className="block px-4 py-3 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium shadow-md"
-          >
-            File Backups
-          </a>
-          <a
-            href="/file-settings"
-            className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
-          >
-            File Settings
-          </a>
+        <nav style={{ padding: "0 16px" }}>
+          <a href="/dashboard" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", color: "#374151", textDecoration: "none", marginBottom: "4px" }}>Dashboard</a>
+          <a href="/system-health" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", color: "#374151", textDecoration: "none", marginBottom: "4px" }}>System Health</a>
+          <a href="/analysis" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", color: "#374151", textDecoration: "none", marginBottom: "4px" }}>Analysis</a>
+          <a href="/file-backups" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", background: "linear-gradient(to right, #a855f7, #ec4899)", color: "white", fontWeight: 500, boxShadow: "0 4px 6px rgba(0,0,0,0.1)", textDecoration: "none" }}>File Backups</a>
+          <a href="/file-settings" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", color: "#374151", textDecoration: "none" }}>File Settings</a>
         </nav>
       </aside>
 
       {/* Main Content */}
-      <main className="ml-64 mt-16 p-8">
+      <main style={{ marginLeft: "256px", marginTop: "64px", padding: "32px" }}>
         {/* Quick Stats & Actions */}
-        <div className="mb-6 flex items-center justify-between">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-50 rounded-lg">
-                  <HardDrive className="w-5 h-5 text-blue-600" />
+        <div style={{ marginBottom: "24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>
+            <div style={{ background: "white", borderRadius: "12px", padding: "16px", border: "1px solid #e5e7eb", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <div style={{ padding: "8px", background: "#dbeafe", borderRadius: "8px" }}>
+                  <HardDrive size={20} color="#2563eb" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 font-medium">Local Backups</p>
-                  <p className="text-2xl font-bold text-gray-900">{localFiles.length}</p>
+                  <p style={{ fontSize: "12px", color: "#6b7280", fontWeight: 500, margin: 0 }}>Local Backups</p>
+                  <p style={{ fontSize: "24px", fontWeight: "bold", color: "#111827", margin: 0 }}>{localFiles.length}</p>
                 </div>
               </div>
             </div>
-            <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-50 rounded-lg">
-                  <Cloud className="w-5 h-5 text-purple-600" />
+            <div style={{ background: "white", borderRadius: "12px", padding: "16px", border: "1px solid #e5e7eb", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <div style={{ padding: "8px", background: "#f3e8ff", borderRadius: "8px" }}>
+                  <Cloud size={20} color="#a855f7" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 font-medium">Cloud Backups</p>
-                  <p className="text-2xl font-bold text-gray-900">{cloudFiles.length}</p>
+                  <p style={{ fontSize: "12px", color: "#6b7280", fontWeight: 500, margin: 0 }}>Cloud Backups</p>
+                  <p style={{ fontSize: "24px", fontWeight: "bold", color: "#111827", margin: 0 }}>{cloudFiles.length}</p>
                 </div>
               </div>
             </div>
@@ -229,198 +219,243 @@ export default function FileBackups() {
           <button
             onClick={fetchBackups}
             disabled={loading}
-            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-medium hover:shadow-lg hover:scale-105 transition-all disabled:opacity-50"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "12px 24px",
+              background: "linear-gradient(to right, #a855f7, #ec4899)",
+              color: "white",
+              border: "none",
+              borderRadius: "12px",
+              fontWeight: 500,
+              cursor: loading ? "not-allowed" : "pointer",
+              boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+              opacity: loading ? 0.5 : 1,
+              fontSize: "14px"
+            }}
           >
-            <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
+            <RefreshCw size={20} style={{ animation: loading ? "spin 1s linear infinite" : "none" }} />
             Refresh
           </button>
         </div>
 
         {/* Status Alert */}
         {uploadStatus && (
-          <div
-            className={`mb-6 p-4 rounded-xl border ${statusColors[statusType]} flex items-start gap-3 animate-in slide-in-from-top duration-300`}
-          >
-            {statusIcons[statusType]}
-            <p className="flex-1 font-medium">{uploadStatus}</p>
+          <div style={{
+            marginBottom: "24px",
+            padding: "16px",
+            borderRadius: "12px",
+            border: `1px solid ${statusColors[statusType].border}`,
+            background: statusColors[statusType].bg,
+            display: "flex",
+            alignItems: "flex-start",
+            gap: "12px"
+          }}>
+            {statusType === "success" && <CheckCircle2 size={20} color={statusColors[statusType].color} />}
+            {statusType === "error" && <AlertCircle size={20} color={statusColors[statusType].color} />}
+            {statusType === "info" && <RefreshCw size={20} color={statusColors[statusType].color} style={{ animation: "spin 1s linear infinite" }} />}
+            <p style={{ flex: 1, fontWeight: 500, color: statusColors[statusType].color, margin: 0 }}>{uploadStatus}</p>
           </div>
         )}
 
-        <div className="space-y-6">
-          {/* Local Backups Card */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow">
-            <div className="p-6 bg-gradient-to-r from-blue-50 to-cyan-50 border-b border-gray-200">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-blue-100 rounded-xl">
-                    <HardDrive className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900">
-                      Local Backups
-                    </h3>
-                    <p className="text-sm text-gray-600">
-                      {localFiles.length} file{localFiles.length !== 1 ? "s" : ""}{" "}
-                      on your computer
-                    </p>
-                  </div>
+        {/* Local Backups Card */}
+        <div style={{ background: "white", borderRadius: "16px", boxShadow: "0 4px 6px rgba(0,0,0,0.1)", border: "1px solid #e5e7eb", overflow: "hidden", marginBottom: "24px" }}>
+          <div style={{ padding: "24px", background: "linear-gradient(to right, #dbeafe, #bfdbfe)", borderBottom: "1px solid #e5e7eb" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <div style={{ padding: "12px", background: "#dbeafe", borderRadius: "12px" }}>
+                  <HardDrive size={24} color="#2563eb" />
                 </div>
-                <button
-                  onClick={uploadToCloud}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-medium hover:shadow-lg hover:scale-105 transition-all"
-                >
-                  <Upload className="w-5 h-5" />
-                  Upload to Cloud
-                </button>
-              </div>
-            </div>
-
-            <div className="p-6">
-              {localFiles.length === 0 ? (
-                <div className="text-center py-12">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-50 rounded-full mb-4">
-                    <Folder className="w-8 h-8 text-blue-400" />
-                  </div>
-                  <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                    No local backups yet
-                  </h4>
-                  <p className="text-sm text-gray-600 max-w-md mx-auto mb-4">
-                    Local backups are stored on your computer. They'll appear
-                    here once monitoring is active and files are backed up.
+                <div>
+                  <h3 style={{ fontSize: "20px", fontWeight: 600, color: "#111827", margin: 0 }}>
+                    Local Backups
+                  </h3>
+                  <p style={{ fontSize: "14px", color: "#4b5563", margin: 0 }}>
+                    {localFiles.length} file{localFiles.length !== 1 ? "s" : ""} on your computer
                   </p>
-                  <div className="inline-block px-4 py-2 bg-blue-50 rounded-lg border border-blue-200">
-                    <p className="text-sm text-blue-700">
-                      💡 Check backup folder path in{" "}
-                      <a
-                        href="/file-settings"
-                        className="font-semibold underline hover:text-blue-800"
-                      >
-                        File Settings
-                      </a>
-                    </p>
-                  </div>
                 </div>
-              ) : (
-                <div className="grid gap-3">
-                  {localFiles.map((file, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl border border-gray-200 hover:shadow-md transition-all group"
-                    >
-                      <div className="flex items-center gap-4 flex-1 min-w-0">
-                        <div className="p-2 bg-blue-100 rounded-lg">
-                          <File className="w-5 h-5 text-blue-600" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-medium text-gray-900 truncate">
-                            {file.name}
-                          </p>
-                          <div className="flex items-center gap-3 text-xs text-gray-500 mt-1">
-                            <span>{formatSize(file.size)}</span>
-                            <span>•</span>
-                            <span>{formatDate(file.modified)}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button
-                          onClick={() => downloadFile(file.name, false)}
-                          className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-                          title="Download"
-                        >
-                          <Download className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => deleteFile(file.name, false)}
-                          className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-                          title="Delete"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+              </div>
+              <button
+                onClick={uploadToCloud}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "10px 20px",
+                  background: "linear-gradient(to right, #06b6d4, #3b82f6)",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "8px",
+                  fontWeight: 500,
+                  cursor: "pointer",
+                  boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+                  fontSize: "14px"
+                }}
+              >
+                <Upload size={20} />
+                Upload to Cloud
+              </button>
             </div>
           </div>
 
-          {/* Cloud Backups Card */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow">
-            <div className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 border-b border-gray-200">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-purple-100 rounded-xl">
-                  <Cloud className="w-6 h-6 text-purple-600" />
+          <div style={{ padding: "24px" }}>
+            {localFiles.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "48px 0" }}>
+                <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "64px", height: "64px", background: "#dbeafe", borderRadius: "50%", marginBottom: "16px" }}>
+                  <Folder size={32} color="#60a5fa" />
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900">
-                    Cloud Backups
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    {cloudFiles.length} file{cloudFiles.length !== 1 ? "s" : ""}{" "}
-                    in MongoDB
+                <h4 style={{ fontSize: "18px", fontWeight: 600, color: "#111827", margin: "0 0 8px 0" }}>
+                  No local backups yet
+                </h4>
+                <p style={{ fontSize: "14px", color: "#6b7280", maxWidth: "400px", margin: "0 auto 16px" }}>
+                  Local backups are stored on your computer. They'll appear here once monitoring is active and files are backed up.
+                </p>
+                <div style={{ display: "inline-block", padding: "16px", background: "#dbeafe", borderRadius: "8px", border: "1px solid #93c5fd" }}>
+                  <p style={{ fontSize: "14px", color: "#1e40af", margin: 0 }}>
+                    💡 Check backup folder path in{" "}
+                    <a href="/file-settings" style={{ fontWeight: 600, textDecoration: "underline", color: "#1e40af" }}>
+                      File Settings
+                    </a>
                   </p>
                 </div>
               </div>
-            </div>
-
-            <div className="p-6">
-              {cloudFiles.length === 0 ? (
-                <div className="text-center py-12">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-50 rounded-full mb-4">
-                    <Cloud className="w-8 h-8 text-purple-400" />
-                  </div>
-                  <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                    No cloud backups yet
-                  </h4>
-                  <p className="text-sm text-gray-600 max-w-md mx-auto">
-                    Cloud backups are automatically uploaded from your local
-                    backups. Start monitoring to begin backing up files.
-                  </p>
-                </div>
-              ) : (
-                <div className="grid gap-3">
-                  {cloudFiles.map((file, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-purple-50 rounded-xl border border-gray-200 hover:shadow-md transition-all group"
-                    >
-                      <div className="flex items-center gap-4 flex-1 min-w-0">
-                        <div className="p-2 bg-purple-100 rounded-lg">
-                          <File className="w-5 h-5 text-purple-600" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-medium text-gray-900 truncate">
-                            {file.name}
-                          </p>
-                          <div className="flex items-center gap-3 text-xs text-gray-500 mt-1">
-                            <span>{formatSize(file.size)}</span>
-                            <span>•</span>
-                            <span>{formatDate(file.uploaded)}</span>
-                          </div>
-                        </div>
+            ) : (
+              <div style={{ display: "grid", gap: "12px" }}>
+                {localFiles.map((file, idx) => (
+                  <div
+                    key={idx}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "16px",
+                      background: "linear-gradient(to right, #f9fafb, #dbeafe)",
+                      borderRadius: "12px",
+                      border: "1px solid #e5e7eb",
+                      boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: "16px", flex: 1, minWidth: 0 }}>
+                      <div style={{ padding: "8px", background: "#dbeafe", borderRadius: "8px" }}>
+                        <File size={20} color="#2563eb" />
                       </div>
-                      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button
-                          onClick={() => downloadFile(file.name, true)}
-                          className="p-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
-                          title="Download"
-                        >
-                          <Download className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => deleteFile(file.name, true)}
-                          className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-                          title="Delete"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <p style={{ fontWeight: 500, color: "#111827", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", margin: "0 0 4px 0" }}>
+                          {file.name}
+                        </p>
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "12px", color: "#6b7280" }}>
+                          <span>{formatSize(file.size)}</span>
+                          <span>•</span>
+                          <span>{formatDate(file.modified)}</span>
+                        </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-              )}
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <button
+                        onClick={() => downloadFile(file.name, false)}
+                        style={{ padding: "8px", background: "#3b82f6", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}
+                        title="Download"
+                      >
+                        <Download size={16} />
+                      </button>
+                      <button
+                        onClick={() => deleteFile(file.name, false)}
+                        style={{ padding: "8px", background: "#ef4444", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}
+                        title="Delete"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Cloud Backups Card */}
+        <div style={{ background: "white", borderRadius: "16px", boxShadow: "0 4px 6px rgba(0,0,0,0.1)", border: "1px solid #e5e7eb", overflow: "hidden" }}>
+          <div style={{ padding: "24px", background: "linear-gradient(to right, #f3e8ff, #e9d5ff)", borderBottom: "1px solid #e5e7eb" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <div style={{ padding: "12px", background: "#f3e8ff", borderRadius: "12px" }}>
+                <Cloud size={24} color="#a855f7" />
+              </div>
+              <div>
+                <h3 style={{ fontSize: "20px", fontWeight: 600, color: "#111827", margin: 0 }}>
+                  Cloud Backups
+                </h3>
+                <p style={{ fontSize: "14px", color: "#4b5563", margin: 0 }}>
+                  {cloudFiles.length} file{cloudFiles.length !== 1 ? "s" : ""} in MongoDB
+                </p>
+              </div>
             </div>
+          </div>
+
+          <div style={{ padding: "24px" }}>
+            {cloudFiles.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "48px 0" }}>
+                <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "64px", height: "64px", background: "#f3e8ff", borderRadius: "50%", marginBottom: "16px" }}>
+                  <Cloud size={32} color="#c084fc" />
+                </div>
+                <h4 style={{ fontSize: "18px", fontWeight: 600, color: "#111827", margin: "0 0 8px 0" }}>
+                  No cloud backups yet
+                </h4>
+                <p style={{ fontSize: "14px", color: "#6b7280", maxWidth: "400px", margin: "0 auto" }}>
+                  Cloud backups are automatically uploaded from your local backups. Start monitoring to begin backing up files.
+                </p>
+              </div>
+            ) : (
+              <div style={{ display: "grid", gap: "12px" }}>
+                {cloudFiles.map((file, idx) => (
+                  <div
+                    key={idx}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "16px",
+                      background: "linear-gradient(to right, #f9fafb, #f3e8ff)",
+                      borderRadius: "12px",
+                      border: "1px solid #e5e7eb",
+                      boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: "16px", flex: 1, minWidth: 0 }}>
+                      <div style={{ padding: "8px", background: "#f3e8ff", borderRadius: "8px" }}>
+                        <File size={20} color="#a855f7" />
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <p style={{ fontWeight: 500, color: "#111827", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", margin: "0 0 4px 0" }}>
+                          {file.name}
+                        </p>
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "12px", color: "#6b7280" }}>
+                          <span>{formatSize(file.size)}</span>
+                          <span>•</span>
+                          <span>{formatDate(file.uploaded)}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <button
+                        onClick={() => downloadFile(file.name, true)}
+                        style={{ padding: "8px", background: "#a855f7", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}
+                        title="Download"
+                      >
+                        <Download size={16} />
+                      </button>
+                      <button
+                        onClick={() => deleteFile(file.name, true)}
+                        style={{ padding: "8px", background: "#ef4444", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}
+                        title="Delete"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </main>
