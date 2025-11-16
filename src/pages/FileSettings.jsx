@@ -1,11 +1,20 @@
 // src/pages/FileSettings.jsx
 import React, { useState, useEffect } from "react";
-import { Play, StopCircle, FolderPlus, Trash2, Save } from "lucide-react";
-import "../styles/dashboard.css";
+import {
+  Play,
+  StopCircle,
+  FolderPlus,
+  Trash2,
+  Save,
+  Folder,
+  HardDrive,
+  CheckCircle2,
+  AlertCircle,
+  Info,
+} from "lucide-react";
 
-// File Monitoring API URL - configure for your deployed backend
-const API_URL =
-  import.meta.env.VITE_API_URL || "https://vigilantlog-backend.onrender.com";
+const FILE_MONITORING_API_URL =
+  import.meta.env.VITE_FILE_MONITORING_API_URL || "https://vigilantlog-backend.onrender.com";
 
 export default function FileSettings() {
   const [state, setState] = useState({
@@ -17,14 +26,24 @@ export default function FileSettings() {
   const [newFolder, setNewFolder] = useState("");
   const [backupFolder, setBackupFolder] = useState("");
   const [status, setStatus] = useState("");
+  const [statusType, setStatusType] = useState("info");
+  const [deviceName, setDeviceName] = useState("");
 
   const fetchState = async () => {
     try {
       const deviceId = sessionStorage.getItem("deviceName") || "default";
-      const res = await fetch(`${API_URL}/api/file-monitor/state?deviceId=${deviceId}`);
+      const res = await fetch(
+        `${FILE_MONITORING_API_URL}/api/file-monitor/state?deviceId=${deviceId}`
+      );
       if (res.ok) {
         const data = await res.json();
-        setState(data.state || { monitor_folders: [], backup_folder: "", startMonitoring: false });
+        setState(
+          data.state || {
+            monitor_folders: [],
+            backup_folder: "",
+            startMonitoring: false,
+          }
+        );
         setMonitoring(data.monitoring_active || false);
         setBackupFolder(data.state?.backup_folder || "");
       }
@@ -35,13 +54,21 @@ export default function FileSettings() {
 
   useEffect(() => {
     fetchState();
+    const device = sessionStorage.getItem("deviceName") || "default";
+    setDeviceName(device);
   }, []);
 
+  const showStatus = (message, type = "info") => {
+    setStatus(message);
+    setStatusType(type);
+    setTimeout(() => setStatus(""), 5000);
+  };
+
   const saveConfig = async () => {
-    setStatus("Saving...");
+    showStatus("Saving configuration...", "info");
     try {
       const deviceId = sessionStorage.getItem("deviceName") || "default";
-      const res = await fetch(`${API_URL}/api/file-monitor/state`, {
+      const res = await fetch(`${FILE_MONITORING_API_URL}/api/file-monitor/state`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -53,26 +80,24 @@ export default function FileSettings() {
       });
       if (res.ok) {
         const data = await res.json();
-        setStatus("Configuration saved!");
-        // Update local state with saved data to keep UI in sync
         if (data.state) {
           setState(data.state);
           setBackupFolder(data.state.backup_folder || "");
         }
-        setTimeout(() => setStatus(""), 3000);
+        showStatus("Configuration saved successfully!", "success");
       } else {
-        setStatus("Failed to save");
+        showStatus("Failed to save configuration", "error");
       }
     } catch (err) {
       console.error("Save error:", err);
-      setStatus("Error saving");
+      showStatus("Error saving configuration", "error");
     }
   };
 
   const addMonitorFolder = () => {
     if (!newFolder.trim()) return;
     if (state.monitor_folders.includes(newFolder)) {
-      alert("Folder already in list");
+      showStatus("Folder already in list", "error");
       return;
     }
     setState({
@@ -80,6 +105,7 @@ export default function FileSettings() {
       monitor_folders: [...state.monitor_folders, newFolder],
     });
     setNewFolder("");
+    showStatus("Folder added! Don't forget to save.", "success");
   };
 
   const removeMonitorFolder = (folder) => {
@@ -87,346 +113,358 @@ export default function FileSettings() {
       ...state,
       monitor_folders: state.monitor_folders.filter((f) => f !== folder),
     });
+    showStatus("Folder removed! Don't forget to save.", "info");
   };
 
   const startMonitoring = async () => {
-    setStatus("Starting monitoring...");
+    showStatus("Starting monitoring...", "info");
     try {
       const deviceId = sessionStorage.getItem("deviceName") || "default";
-      const res = await fetch(`${API_URL}/api/file-monitor/start`, {
+      const res = await fetch(`${FILE_MONITORING_API_URL}/api/file-monitor/start`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ device_id: deviceId }),
       });
       if (res.ok) {
-        setStatus("Signal sent! Desktop agent will start monitoring within 60 seconds.");
         setMonitoring(true);
-        setTimeout(() => setStatus(""), 5000);
+        showStatus(
+          "Monitoring started! Agent will sync within 60 seconds.",
+          "success"
+        );
       } else {
-        setStatus("Failed to start");
+        showStatus("Failed to start monitoring", "error");
       }
     } catch (err) {
-      setStatus("Error starting monitoring");
+      showStatus("Error starting monitoring", "error");
     }
   };
 
   const stopMonitoring = async () => {
-    setStatus("Stopping monitoring...");
+    showStatus("Stopping monitoring...", "info");
     try {
       const deviceId = sessionStorage.getItem("deviceName") || "default";
-      const res = await fetch(`${API_URL}/api/file-monitor/stop`, {
+      const res = await fetch(`${FILE_MONITORING_API_URL}/api/file-monitor/stop`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ device_id: deviceId }),
       });
       if (res.ok) {
-        setStatus("Signal sent! Desktop agent will stop monitoring within 60 seconds.");
         setMonitoring(false);
-        setTimeout(() => setStatus(""), 5000);
+        showStatus(
+          "Monitoring stopped! Agent will sync within 60 seconds.",
+          "success"
+        );
       } else {
-        setStatus("Failed to stop");
+        showStatus("Failed to stop monitoring", "error");
       }
     } catch (err) {
-      setStatus("Error stopping monitoring");
+      showStatus("Error stopping monitoring", "error");
     }
   };
 
+  const statusColors = {
+    success: "bg-emerald-50 border-emerald-200 text-emerald-800",
+    error: "bg-red-50 border-red-200 text-red-800",
+    info: "bg-blue-50 border-blue-200 text-blue-800",
+  };
+
+  const statusIcons = {
+    success: <CheckCircle2 className="w-5 h-5" />,
+    error: <AlertCircle className="w-5 h-5" />,
+    info: <Info className="w-5 h-5" />,
+  };
+
   return (
-    <div className="dashboard-root">
-      <aside className="sidebar">
-        <div className="sidebar-brand">VigilantLog</div>
-        <nav className="sidebar-nav">
-          <a className="nav-item" href="/dashboard">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
+      {/* Top Navbar */}
+      <nav className="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 shadow-sm z-50 flex items-center justify-between px-6">
+        <div className="flex items-center gap-3">
+          <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            VigilantLog
+          </h1>
+          <span className="text-sm text-gray-400">|</span>
+          <span className="text-sm font-medium text-gray-600">File Monitoring Settings</span>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-100">
+            <span className="text-xs text-gray-500 font-medium">Device:</span>
+            <span className="text-sm font-semibold text-gray-700">{deviceName}</span>
+          </div>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white shadow-sm border border-gray-200">
+            <div
+              className={`w-2 h-2 rounded-full ${
+                monitoring ? "bg-emerald-500 animate-pulse" : "bg-gray-400"
+              }`}
+            ></div>
+            <span
+              className={`text-xs font-medium ${
+                monitoring ? "text-emerald-700" : "text-gray-500"
+              }`}
+            >
+              {monitoring ? "Active" : "Stopped"}
+            </span>
+          </div>
+        </div>
+      </nav>
+
+      {/* Sidebar */}
+      <aside className="fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 bg-white border-r border-gray-200 shadow-lg">
+        <div className="p-6">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            VigilantLog
+          </h1>
+        </div>
+        <nav className="px-4 space-y-1">
+          <a
+            href="/dashboard"
+            className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+          >
             Dashboard
           </a>
-          <a className="nav-item" href="/system-health">
+          <a
+            href="/system-health"
+            className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+          >
             System Health
           </a>
-          <a className="nav-item" href="/analysis">
+          <a
+            href="/analysis"
+            className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+          >
             Analysis
           </a>
-          <a className="nav-item" href="/file-backups">
+          <a
+            href="/file-backups"
+            className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+          >
             File Backups
           </a>
-          <a className="nav-item active" href="/file-settings">
+          <a
+            href="/file-settings"
+            className="block px-4 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium shadow-md"
+          >
             File Settings
           </a>
         </nav>
       </aside>
 
-      <main className="main">
-        <header className="topbar">
-          <h2>File Monitoring Settings</h2>
-          <div className="user">
-            {monitoring ? (
-              <span style={{ color: "#0ea5a4", fontWeight: 600 }}>
-                ● Monitoring Active
-              </span>
-            ) : (
-              <span style={{ color: "#999", fontWeight: 600 }}>
-                ○ Monitoring Stopped
-              </span>
-            )}
+      {/* Main Content */}
+      <main className="ml-64 mt-16 p-8">
+        {/* Device Info Card */}
+        <div className="mb-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-5 border border-indigo-200 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 bg-indigo-100 rounded-xl">
+                <HardDrive className="w-5 h-5 text-indigo-600" />
+              </div>
+              <div>
+                <p className="text-xs text-gray-600 font-medium mb-0.5">Connected Device</p>
+                <p className="text-lg font-bold text-gray-900">{deviceName}</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-xs text-gray-500 mb-1">Status</p>
+              <div className="flex items-center gap-2">
+                <div className={`w-2.5 h-2.5 rounded-full ${monitoring ? "bg-emerald-500 animate-pulse" : "bg-gray-400"}`}></div>
+                <span className={`text-sm font-semibold ${monitoring ? "text-emerald-700" : "text-gray-500"}`}>
+                  {monitoring ? "Monitoring Active" : "Monitoring Stopped"}
+                </span>
+              </div>
+            </div>
           </div>
-        </header>
+        </div>
 
+        {/* Status Alert */}
         {status && (
           <div
-            style={{
-              margin: "20px",
-              padding: "12px 20px",
-              background: "#e0f2fe",
-              color: "#0369a1",
-              borderRadius: "8px",
-              fontWeight: 500,
-            }}
+            className={`mb-6 p-4 rounded-xl border ${statusColors[statusType]} flex items-start gap-3 animate-in slide-in-from-top duration-300`}
           >
-            {status}
+            {statusIcons[statusType]}
+            <p className="flex-1 font-medium">{status}</p>
           </div>
         )}
 
-        {/* Info Box */}
-        <div
-          style={{
-            margin: "20px",
-            padding: "16px",
-            background: "#f0f9ff",
-            border: "1px solid #7dd3fc",
-            borderRadius: "8px",
-          }}
-        >
-          <h4 style={{ margin: "0 0 8px 0", color: "#0369a1" }}>
-            📋 How It Works
-          </h4>
-          <ul style={{ margin: 0, paddingLeft: "20px", color: "#0c4a6e" }}>
-            <li>Configure backup and monitor folders below</li>
-            <li>Click "Save Configuration" to persist your settings</li>
-            <li>Start monitoring - your desktop agent will sync settings within 60 seconds</li>
-            <li>Files will be backed up locally to your backup folder</li>
-            <li>View local backups by opening the backup folder on your computer</li>
-          </ul>
+        {/* Info Card */}
+        <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200 shadow-sm">
+          <div className="flex items-start gap-3">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <Info className="w-5 h-5 text-blue-600" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-2">How It Works</h3>
+              <ul className="space-y-1 text-sm text-gray-700">
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                  Configure backup and monitor folders below
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                  Click "Save Configuration" to persist settings
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                  Start monitoring - agent syncs within 60 seconds
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                  Files backed up locally and uploaded to cloud
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
 
-        {/* Monitoring Control */}
-        <section className="panel" style={{ margin: "20px" }}>
-          <h3>Monitoring Control</h3>
-          <div style={{ display: "flex", gap: "12px", marginTop: "16px" }}>
-            <button
-              onClick={startMonitoring}
-              disabled={monitoring}
-              style={{
-                padding: "10px 20px",
-                background: monitoring ? "#d1d5db" : "#0ea5a4",
-                color: "white",
-                border: "none",
-                borderRadius: "6px",
-                cursor: monitoring ? "not-allowed" : "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                fontWeight: 500,
-              }}
-            >
-              <Play size={18} />
-              Start Monitoring
-            </button>
-            <button
-              onClick={stopMonitoring}
-              disabled={!monitoring}
-              style={{
-                padding: "10px 20px",
-                background: !monitoring ? "#d1d5db" : "#ef4444",
-                color: "white",
-                border: "none",
-                borderRadius: "6px",
-                cursor: !monitoring ? "not-allowed" : "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                fontWeight: 500,
-              }}
-            >
-              <StopCircle size={18} />
-              Stop Monitoring
-            </button>
+        <div className="grid grid-cols-1 gap-6">
+          {/* Monitoring Control Card */}
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-shadow">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <Play className="w-6 h-6 text-indigo-600" />
+              Monitoring Control
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              <button
+                onClick={startMonitoring}
+                disabled={monitoring}
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
+                  monitoring
+                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                    : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-lg hover:scale-105"
+                }`}
+              >
+                <Play className="w-5 h-5" />
+                Start Monitoring
+              </button>
+              <button
+                onClick={stopMonitoring}
+                disabled={!monitoring}
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
+                  !monitoring
+                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                    : "bg-gradient-to-r from-red-500 to-pink-500 text-white hover:shadow-lg hover:scale-105"
+                }`}
+              >
+                <StopCircle className="w-5 h-5" />
+                Stop Monitoring
+              </button>
+            </div>
           </div>
-        </section>
 
-        {/* Backup Folder */}
-        <section className="panel" style={{ margin: "20px" }}>
-          <h3>Backup Folder</h3>
-          <p style={{ color: "#666", marginBottom: "12px" }}>
-            Where backup files will be saved on your computer (local storage)
-          </p>
-          <div style={{ 
-            background: "#fffbeb", 
-            border: "1px solid #fcd34d", 
-            borderRadius: "6px", 
-            padding: "12px", 
-            marginBottom: "12px" 
-          }}>
-            <p style={{ margin: 0, fontSize: "14px", color: "#92400e" }}>
-              💡 <strong>Tip:</strong> Use an absolute path like <code>C:\Users\YourName\VigilantLog_Backups</code>
+          {/* Backup Folder Card */}
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-shadow">
+            <h3 className="text-xl font-semibold text-gray-900 mb-2 flex items-center gap-2">
+              <HardDrive className="w-6 h-6 text-indigo-600" />
+              Backup Folder
+            </h3>
+            <p className="text-sm text-gray-600 mb-4">
+              Local folder where backup files will be saved
             </p>
-          </div>
-          <div style={{ display: "flex", gap: "12px", marginTop: "16px" }}>
-            <input
-              type="text"
-              value={backupFolder}
-              onChange={(e) => setBackupFolder(e.target.value)}
-              placeholder="e.g., C:\Users\YourName\Desktop\backups"
-              style={{
-                flex: 1,
-                padding: "10px",
-                border: "1px solid #d1d5db",
-                borderRadius: "6px",
-                fontSize: "14px",
-              }}
-            />
-            <button
-              onClick={saveConfig}
-              style={{
-                padding: "10px 20px",
-                background: "#2563eb",
-                color: "white",
-                border: "none",
-                borderRadius: "6px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                fontWeight: 500,
-              }}
-            >
-              <Save size={18} />
-              Save
-            </button>
-          </div>
-        </section>
-
-        {/* Monitor Folders */}
-        <section className="panel" style={{ margin: "20px" }}>
-          <h3>Folders to Monitor</h3>
-          <p style={{ color: "#666", marginBottom: "12px" }}>
-            Add folders to watch for file changes
-          </p>
-          <div style={{ 
-            background: "#fffbeb", 
-            border: "1px solid #fcd34d", 
-            borderRadius: "6px", 
-            padding: "12px", 
-            marginBottom: "12px" 
-          }}>
-            <p style={{ margin: 0, fontSize: "14px", color: "#92400e" }}>
-              💡 <strong>Tip:</strong> Use absolute paths like <code>C:\Users\YourName\Documents\Important</code>
-            </p>
-          </div>
-
-          <div style={{ display: "flex", gap: "12px", marginTop: "16px" }}>
-            <input
-              type="text"
-              value={newFolder}
-              onChange={(e) => setNewFolder(e.target.value)}
-              placeholder="e.g., C:\Users\YourName\Documents"
-              style={{
-                flex: 1,
-                padding: "10px",
-                border: "1px solid #d1d5db",
-                borderRadius: "6px",
-                fontSize: "14px",
-              }}
-              onKeyPress={(e) => e.key === "Enter" && addMonitorFolder()}
-            />
-            <button
-              onClick={addMonitorFolder}
-              style={{
-                padding: "10px 20px",
-                background: "#0ea5a4",
-                color: "white",
-                border: "none",
-                borderRadius: "6px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                fontWeight: 500,
-              }}
-            >
-              <FolderPlus size={18} />
-              Add Folder
-            </button>
-          </div>
-
-          {/* Folder List */}
-          <div style={{ marginTop: "20px" }}>
-            {state.monitor_folders.length === 0 ? (
-              <p style={{ color: "#999", fontStyle: "italic" }}>
-                No folders configured yet
+            <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+              <p className="text-sm text-amber-800">
+                💡 <strong>Tip:</strong> Use absolute path like{" "}
+                <code className="bg-amber-100 px-2 py-0.5 rounded">
+                  C:\Users\YourName\VigilantLog_Backups
+                </code>
               </p>
-            ) : (
-              <ul style={{ listStyle: "none", padding: 0 }}>
-                {state.monitor_folders.map((folder, idx) => (
-                  <li
+            </div>
+            <div className="flex gap-3">
+              <input
+                type="text"
+                value={backupFolder}
+                onChange={(e) => setBackupFolder(e.target.value)}
+                placeholder="e.g., C:\Users\YourName\Desktop\backups"
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+              />
+              <button
+                onClick={saveConfig}
+                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-medium hover:shadow-lg hover:scale-105 transition-all"
+              >
+                <Save className="w-5 h-5" />
+                Save
+              </button>
+            </div>
+          </div>
+
+          {/* Monitor Folders Card */}
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-shadow">
+            <h3 className="text-xl font-semibold text-gray-900 mb-2 flex items-center gap-2">
+              <Folder className="w-6 h-6 text-indigo-600" />
+              Folders to Monitor
+            </h3>
+            <p className="text-sm text-gray-600 mb-4">
+              Add folders to watch for file changes
+            </p>
+            <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+              <p className="text-sm text-amber-800">
+                💡 <strong>Tip:</strong> Use absolute paths like{" "}
+                <code className="bg-amber-100 px-2 py-0.5 rounded">
+                  C:\Users\YourName\Documents\Important
+                </code>
+              </p>
+            </div>
+
+            {/* Add Folder Input */}
+            <div className="flex gap-3 mb-6">
+              <input
+                type="text"
+                value={newFolder}
+                onChange={(e) => setNewFolder(e.target.value)}
+                placeholder="e.g., C:\Users\YourName\Documents"
+                onKeyPress={(e) => e.key === "Enter" && addMonitorFolder()}
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
+              />
+              <button
+                onClick={addMonitorFolder}
+                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-xl font-medium hover:shadow-lg hover:scale-105 transition-all"
+              >
+                <FolderPlus className="w-5 h-5" />
+                Add Folder
+              </button>
+            </div>
+
+            {/* Folder List */}
+            <div className="space-y-3">
+              {state.monitor_folders.length === 0 ? (
+                <div className="text-center py-12 text-gray-400">
+                  <Folder className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                  <p className="text-sm italic">No folders configured yet</p>
+                </div>
+              ) : (
+                state.monitor_folders.map((folder, idx) => (
+                  <div
                     key={idx}
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "12px",
-                      background: "#f9fafb",
-                      borderRadius: "6px",
-                      marginBottom: "8px",
-                    }}
+                    className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl border border-gray-200 hover:shadow-md transition-all group"
                   >
-                    <span style={{ fontFamily: "monospace", fontSize: "14px" }}>
-                      {folder}
-                    </span>
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <Folder className="w-5 h-5 text-teal-600 flex-shrink-0" />
+                      <span className="text-sm font-mono text-gray-700 truncate">
+                        {folder}
+                      </span>
+                    </div>
                     <button
                       onClick={() => removeMonitorFolder(folder)}
-                      style={{
-                        padding: "6px 12px",
-                        background: "#ef4444",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "4px",
-                      }}
+                      className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-all opacity-0 group-hover:opacity-100"
                     >
-                      <Trash2 size={14} />
+                      <Trash2 className="w-4 h-4" />
                       Remove
                     </button>
-                  </li>
-                ))}
-              </ul>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* Save Button */}
+            {state.monitor_folders.length > 0 && (
+              <button
+                onClick={saveConfig}
+                className="mt-6 w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-medium hover:shadow-lg hover:scale-105 transition-all"
+              >
+                <Save className="w-5 h-5" />
+                Save Configuration
+              </button>
             )}
           </div>
-
-          <button
-            onClick={saveConfig}
-            style={{
-              marginTop: "16px",
-              padding: "10px 20px",
-              background: "#2563eb",
-              color: "white",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              fontWeight: 500,
-            }}
-          >
-            <Save size={18} />
-            Save Configuration
-          </button>
-        </section>
+        </div>
       </main>
     </div>
   );
 }
-
-
