@@ -97,7 +97,7 @@ export default function FileSettings() {
   const addMonitorFolder = () => {
     if (!newFolder.trim()) return;
     if (state.monitor_folders.includes(newFolder)) {
-      showStatus("Folder already in list", "error");
+      showStatus("Folder already present in list", "error");
       return;
     }
     setState({
