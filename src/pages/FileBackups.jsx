@@ -58,22 +58,8 @@ export default function FileBackups() {
     setTimeout(() => setUploadStatus(""), 3000);
   };
 
-  const uploadToCloud = async () => {
-    showStatus("Uploading to cloud...", "info");
-    try {
-      const res = await fetch(`${FILE_MONITORING_API_URL}/api/file-monitor/upload`, {
-        method: "POST",
-      });
-      if (res.ok) {
-        showStatus("Upload completed successfully!", "success");
-        fetchBackups();
-      } else {
-        showStatus("Upload failed", "error");
-      }
-    } catch (err) {
-      showStatus("Upload error", "error");
-    }
-  };
+  // Note: Cloud uploads are handled automatically by the desktop agent
+  // The agent periodically uploads local backups to cloud when monitoring is active
 
   const downloadFile = (filename, isCloud = false) => {
     const url = isCloud
@@ -240,6 +226,29 @@ export default function FileBackups() {
           </button>
         </div>
 
+        {/* Info Banner */}
+        <div style={{
+          marginBottom: "24px",
+          padding: "16px 20px",
+          borderRadius: "12px",
+          border: "1px solid #93c5fd",
+          background: "linear-gradient(to right, #dbeafe, #e0e7ff)",
+          display: "flex",
+          alignItems: "flex-start",
+          gap: "12px"
+        }}>
+          <Upload size={20} color="#2563eb" style={{ marginTop: "2px", flexShrink: 0 }} />
+          <div>
+            <p style={{ fontWeight: 600, color: "#1e3a8a", margin: "0 0 4px 0", fontSize: "14px" }}>
+              Automatic Cloud Sync
+            </p>
+            <p style={{ color: "#1e40af", margin: 0, fontSize: "13px", lineHeight: "1.5" }}>
+              Local backups are automatically uploaded to the cloud when monitoring is active. 
+              The desktop agent syncs every 60 seconds.
+            </p>
+          </div>
+        </div>
+
         {/* Status Alert */}
         {uploadStatus && (
           <div style={{
@@ -276,26 +285,12 @@ export default function FileBackups() {
                   </p>
                 </div>
               </div>
-              <button
-                onClick={uploadToCloud}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  padding: "10px 20px",
-                  background: "linear-gradient(to right, #06b6d4, #3b82f6)",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "8px",
-                  fontWeight: 500,
-                  cursor: "pointer",
-                  boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-                  fontSize: "14px"
-                }}
-              >
-                <Upload size={20} />
-                Upload to Cloud
-              </button>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 16px", background: "#dbeafe", borderRadius: "8px", border: "1px solid #93c5fd" }}>
+                <Upload size={18} color="#2563eb" />
+                <span style={{ fontSize: "13px", fontWeight: 500, color: "#1e40af" }}>
+                  Auto-synced to cloud
+                </span>
+              </div>
             </div>
           </div>
 

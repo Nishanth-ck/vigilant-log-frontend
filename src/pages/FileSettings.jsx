@@ -37,15 +37,15 @@ export default function FileSettings() {
       );
       if (res.ok) {
         const data = await res.json();
-        setState(
-          data.state || {
-            monitor_folders: [],
-            backup_folder: "",
-            startMonitoring: false,
-          }
-        );
-        setMonitoring(data.monitoring_active || false);
-        setBackupFolder(data.state?.backup_folder || "");
+        const fetchedState = data.state || {
+          monitor_folders: [],
+          backup_folder: "",
+          startMonitoring: false,
+        };
+        setState(fetchedState);
+        // Sync monitoring state from backend - use startMonitoring from state
+        setMonitoring(fetchedState.startMonitoring || false);
+        setBackupFolder(fetchedState.backup_folder || "");
       }
     } catch (err) {
       console.error("Failed to fetch state:", err);
@@ -75,7 +75,8 @@ export default function FileSettings() {
           device_id: deviceId,
           monitor_folders: state.monitor_folders,
           backup_folder: backupFolder,
-          startMonitoring: state.startMonitoring,
+          // Use the current monitoring state, not state.startMonitoring
+          startMonitoring: monitoring,
         }),
       });
       if (res.ok) {
@@ -127,6 +128,8 @@ export default function FileSettings() {
       });
       if (res.ok) {
         setMonitoring(true);
+        // Also update state so saveConfig will use the correct value
+        setState({ ...state, startMonitoring: true });
         showStatus("Monitoring started! Agent will sync within 60 seconds.", "success");
       } else {
         showStatus("Failed to start monitoring", "error");
@@ -147,6 +150,8 @@ export default function FileSettings() {
       });
       if (res.ok) {
         setMonitoring(false);
+        // Also update state so saveConfig will use the correct value
+        setState({ ...state, startMonitoring: false });
         showStatus("Monitoring stopped! Agent will sync within 60 seconds.", "success");
       } else {
         showStatus("Failed to stop monitoring", "error");
