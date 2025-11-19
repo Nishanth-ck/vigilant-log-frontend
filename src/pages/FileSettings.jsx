@@ -12,6 +12,12 @@ import {
   AlertCircle,
   Info,
 } from "lucide-react";
+import { 
+  getLoggedInUsername, 
+  getDeviceId, 
+  isHostnameConfigured,
+  saveUserHostnameMapping 
+} from "../utils/userMapping";
 
 const FILE_MONITORING_API_URL =
   import.meta.env.VITE_FILE_MONITORING_API_URL || "https://vigilantlog-backend.onrender.com";
@@ -28,12 +34,20 @@ export default function FileSettings() {
   const [status, setStatus] = useState("");
   const [statusType, setStatusType] = useState("info");
   const [hostname, setHostname] = useState("");
+  const [username, setUsername] = useState("");
+  const [hostnameConfigured, setHostnameConfigured] = useState(false);
 
   const fetchState = async () => {
     try {
-      const savedHostname = localStorage.getItem("hostname") || "";
+      const deviceId = getDeviceId();
+      
+      // If no hostname configured, don't fetch state yet
+      if (!deviceId) {
+        return;
+      }
+      
       const res = await fetch(
-        `${FILE_MONITORING_API_URL}/api/file-monitor/state?deviceId=${savedHostname || "default"}`
+        `${FILE_MONITORING_API_URL}/api/file-monitor/state?deviceId=${deviceId}`
       );
       if (res.ok) {
         const data = await res.json();
@@ -53,9 +67,20 @@ export default function FileSettings() {
   };
 
   useEffect(() => {
-    fetchState();
-    const savedHostname = localStorage.getItem("hostname") || "";
-    setHostname(savedHostname);
+    // Get logged-in username
+    const loggedInUsername = getLoggedInUsername();
+    setUsername(loggedInUsername || "");
+    
+    // Check if hostname is configured
+    const isConfigured = isHostnameConfigured();
+    setHostnameConfigured(isConfigured);
+    
+    // Get current hostname if configured
+    if (isConfigured) {
+      const currentHostname = getDeviceId();
+      setHostname(currentHostname || "");
+      fetchState();
+    }
   }, []);
 
   const showStatus = (message, type = "info") => {
@@ -65,35 +90,56 @@ export default function FileSettings() {
   };
 
   const saveConfig = async () => {
+    // Validate hostname is provided
+    if (!hostname || !hostname.trim()) {
+      showStatus("Please enter a hostname", "error");
+      return;
+    }
+    
+    // Validate username
+    if (!username) {
+      showStatus("User not logged in. Please login again.", "error");
+      return;
+    }
+    
     showStatus("Saving configuration...", "info");
     try {
-      const deviceId = hostname || "default";
-      
-      // Save hostname to localStorage
-      if (hostname) {
+      // First, save the username-to-hostname mapping
+      try {
+        await saveUserHostnameMapping(username, hostname);
+        
+        // Update local state
         localStorage.setItem("hostname", hostname);
+        localStorage.setItem("hostname_configured", "true");
+        setHostnameConfigured(true);
+      } catch (mappingError) {
+        console.error("Failed to save user mapping:", mappingError);
+        showStatus("Failed to link username to hostname", "error");
+        return;
       }
       
+      // Then save the file monitoring configuration
       const res = await fetch(`${FILE_MONITORING_API_URL}/api/file-monitor/state`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          device_id: deviceId,
+          device_id: hostname,
           monitor_folders: state.monitor_folders,
           backup_folder: backupFolder,
           // Use the current monitoring state, not state.startMonitoring
           startMonitoring: monitoring,
         }),
       });
+      
       if (res.ok) {
         const data = await res.json();
         if (data.state) {
           setState(data.state);
           setBackupFolder(data.state.backup_folder || "");
         }
-        showStatus("Configuration saved successfully!", "success");
+        showStatus("Configuration saved successfully! Your hostname is now linked to your account.", "success");
       } else {
-        showStatus("Failed to save configuration", "error");
+        showStatus("Failed to save file monitoring configuration", "error");
       }
     } catch (err) {
       console.error("Save error:", err);
@@ -199,9 +245,15 @@ export default function FileSettings() {
           <span style={{ fontSize: "14px", fontWeight: 500, color: "#4b5563" }}>File Monitoring Settings</span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "6px 12px", borderRadius: "8px", background: "#f3f4f6" }}>
-            <span style={{ fontSize: "12px", color: "#6b7280", fontWeight: 500 }}>Hostname:</span>
-            <span style={{ fontSize: "14px", fontWeight: 600, color: "#374151", fontFamily: "monospace" }}>{hostname || "Not Set"}</span>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "6px 12px", borderRadius: "8px", background: "#eff6ff", border: "1px solid #dbeafe" }}>
+            <span style={{ fontSize: "12px", color: "#1e40af", fontWeight: 500 }}>User:</span>
+            <span style={{ fontSize: "14px", fontWeight: 600, color: "#1e3a8a" }}>{username || "Not Logged In"}</span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "6px 12px", borderRadius: "8px", background: hostnameConfigured ? "#f3f4f6" : "#fef3c7", border: hostnameConfigured ? "none" : "1px solid #fbbf24" }}>
+            <span style={{ fontSize: "12px", color: hostnameConfigured ? "#6b7280" : "#92400e", fontWeight: 500 }}>Hostname:</span>
+            <span style={{ fontSize: "14px", fontWeight: 600, color: hostnameConfigured ? "#374151" : "#92400e", fontFamily: "monospace" }}>
+              {hostname || "⚠️ Not Configured"}
+            </span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "6px 12px", borderRadius: "9999px", background: "white", boxShadow: "0 1px 2px rgba(0,0,0,0.05)", border: "1px solid #e5e7eb" }}>
             <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: monitoring ? "#10b981" : "#9ca3af", animation: monitoring ? "pulse 2s infinite" : "none" }}></div>
@@ -575,4 +627,5 @@ export default function FileSettings() {
     </div>
   );
 }
+
 

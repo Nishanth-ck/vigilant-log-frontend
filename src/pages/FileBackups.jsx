@@ -12,6 +12,11 @@ import {
   CheckCircle2,
   Folder,
 } from "lucide-react";
+import { 
+  getLoggedInUsername, 
+  getDeviceId, 
+  isHostnameConfigured 
+} from "../utils/userMapping";
 
 const FILE_MONITORING_API_URL =
   import.meta.env.VITE_FILE_MONITORING_API_URL || "https://vigilantlog-backend.onrender.com";
@@ -22,12 +27,20 @@ export default function FileBackups() {
   const [loading, setLoading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState("");
   const [statusType, setStatusType] = useState("info");
+  const [username, setUsername] = useState("");
+  const [hostnameConfigured, setHostnameConfigured] = useState(false);
+  const [hostname, setHostname] = useState("");
 
   const fetchBackups = async () => {
+    const deviceId = getDeviceId();
+    
+    // Don't fetch if no hostname configured
+    if (!deviceId) {
+      return;
+    }
+    
     setLoading(true);
     try {
-      const deviceId = localStorage.getItem("hostname") || "default";
-
       const localRes = await fetch(
         `${FILE_MONITORING_API_URL}/api/file-monitor/backups/local?deviceId=${deviceId}`
       );
@@ -36,7 +49,10 @@ export default function FileBackups() {
         setLocalFiles(localData.files || []);
       }
 
-      const cloudRes = await fetch(`${FILE_MONITORING_API_URL}/api/file-monitor/backups/cloud`);
+      // Also pass deviceId to cloud backups for proper filtering
+      const cloudRes = await fetch(
+        `${FILE_MONITORING_API_URL}/api/file-monitor/backups/cloud?deviceId=${deviceId}`
+      );
       if (cloudRes.ok) {
         const cloudData = await cloudRes.json();
         setCloudFiles(cloudData.files || []);
@@ -49,7 +65,20 @@ export default function FileBackups() {
   };
 
   useEffect(() => {
-    fetchBackups();
+    // Get logged-in username
+    const loggedInUsername = getLoggedInUsername();
+    setUsername(loggedInUsername || "");
+    
+    // Check if hostname is configured
+    const isConfigured = isHostnameConfigured();
+    setHostnameConfigured(isConfigured);
+    
+    // Get hostname if configured
+    if (isConfigured) {
+      const currentHostname = getDeviceId();
+      setHostname(currentHostname || "");
+      fetchBackups();
+    }
   }, []);
 
   const showStatus = (message, type = "info") => {
@@ -62,9 +91,10 @@ export default function FileBackups() {
   // The agent periodically uploads local backups to cloud when monitoring is active
 
   const downloadFile = (filename, isCloud = false) => {
+    const deviceId = getDeviceId();
     const url = isCloud
-      ? `${FILE_MONITORING_API_URL}/api/file-monitor/backups/cloud/${filename}`
-      : `${FILE_MONITORING_API_URL}/api/file-monitor/backups/local/${filename}`;
+      ? `${FILE_MONITORING_API_URL}/api/file-monitor/backups/cloud/${filename}?deviceId=${deviceId}`
+      : `${FILE_MONITORING_API_URL}/api/file-monitor/backups/local/${filename}?deviceId=${deviceId}`;
     window.open(url, "_blank");
   };
 
@@ -72,9 +102,10 @@ export default function FileBackups() {
     if (!window.confirm(`Delete ${filename}?`)) return;
 
     try {
+      const deviceId = getDeviceId();
       const url = isCloud
-        ? `${FILE_MONITORING_API_URL}/api/file-monitor/backups/cloud/${filename}`
-        : `${FILE_MONITORING_API_URL}/api/file-monitor/backups/local/${filename}`;
+        ? `${FILE_MONITORING_API_URL}/api/file-monitor/backups/cloud/${filename}?deviceId=${deviceId}`
+        : `${FILE_MONITORING_API_URL}/api/file-monitor/backups/local/${filename}?deviceId=${deviceId}`;
       
       const res = await fetch(url, { method: "DELETE" });
       if (res.ok) {
@@ -176,6 +207,67 @@ export default function FileBackups() {
 
       {/* Main Content */}
       <main style={{ marginLeft: "256px", marginTop: "64px", padding: "32px" }}>
+        
+        {/* Empty State - Hostname Not Configured */}
+        {!hostnameConfigured && (
+          <div style={{ 
+            maxWidth: "600px", 
+            margin: "100px auto", 
+            textAlign: "center",
+            background: "white",
+            borderRadius: "16px",
+            padding: "48px 32px",
+            border: "2px dashed #fbbf24",
+            boxShadow: "0 4px 6px rgba(0,0,0,0.05)"
+          }}>
+            <div style={{ 
+              width: "80px", 
+              height: "80px", 
+              background: "#fef3c7", 
+              borderRadius: "50%", 
+              display: "flex", 
+              alignItems: "center", 
+              justifyContent: "center",
+              margin: "0 auto 24px"
+            }}>
+              <AlertCircle size={40} color="#f59e0b" />
+            </div>
+            <h2 style={{ fontSize: "24px", fontWeight: "bold", color: "#111827", marginBottom: "12px" }}>
+              Hostname Not Configured
+            </h2>
+            <p style={{ fontSize: "16px", color: "#6b7280", marginBottom: "24px", lineHeight: "1.6" }}>
+              {username ? `Hi ${username}, ` : ""}Please configure your hostname in File Settings to view and manage your backups.
+            </p>
+            <a 
+              href="/file-settings"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "12px 24px",
+                background: "linear-gradient(to right, #2563eb, #4f46e5)",
+                color: "white",
+                borderRadius: "8px",
+                textDecoration: "none",
+                fontWeight: 600,
+                fontSize: "14px",
+                boxShadow: "0 2px 4px rgba(37,99,235,0.2)",
+                transition: "all 0.2s"
+              }}
+              onMouseOver={(e) => e.target.style.transform = "translateY(-1px)"}
+              onMouseOut={(e) => e.target.style.transform = "translateY(0)"}
+            >
+              Go to File Settings
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"/>
+              </svg>
+            </a>
+          </div>
+        )}
+        
+        {/* Show content only if hostname is configured */}
+        {hostnameConfigured && (
+          <>
         {/* Quick Stats & Actions */}
         <div style={{ marginBottom: "24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>
@@ -453,6 +545,8 @@ export default function FileBackups() {
           )}
           </div>
         </div>
+        </>
+        )}
       </main>
     </div>
   );

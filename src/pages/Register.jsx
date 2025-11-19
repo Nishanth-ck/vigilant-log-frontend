@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { User, Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import "../styles/auth.css";
 import axios from "axios";
+import { initializeUserContext } from "../utils/userMapping";
 
 export default function Register() {
   const navigate = useNavigate();
 
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
     username: "",
@@ -23,6 +26,16 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate password match
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+    
+    setLoading(true);
+    setError("");
+    
     try {
       const payload = {
         username: formData.username,
@@ -39,6 +52,8 @@ export default function Register() {
       );
 
       console.log(response);
+      
+      // Store auth data in sessionStorage
       sessionStorage.setItem(
         "deviceName",
         response?.data?.data?.user?.deviceName
@@ -47,9 +62,16 @@ export default function Register() {
       sessionStorage.setItem("username", response?.data?.data?.user?.username);
       sessionStorage.setItem("id", response?.data?.data?.user?.id);
       sessionStorage.setItem("email", response?.data?.data?.user?.email);
+      
+      // Initialize user context (will show no hostname configured yet)
+      await initializeUserContext();
+      
       navigate("/login");
     } catch (err) {
-      console.log(err);
+      console.error("Registration error:", err);
+      setError(err.response?.data?.message || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,6 +84,19 @@ export default function Register() {
         </div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
+          {error && (
+            <div style={{ 
+              padding: "12px", 
+              background: "#fee", 
+              border: "1px solid #fcc", 
+              borderRadius: "8px", 
+              color: "#c00",
+              fontSize: "14px"
+            }}>
+              {error}
+            </div>
+          )}
+          
           {/* Full Name */}
           <label className="field">
             <span className="label">Full Name</span>
@@ -73,6 +108,7 @@ export default function Register() {
                 value={formData.username}
                 onChange={handleChange}
                 required
+                disabled={loading}
               />
             </div>
           </label>
@@ -162,9 +198,9 @@ export default function Register() {
             </span>
           </label>
 
-          <button className="submit-btn" type="submit">
-            <span>Create Account</span>
-            <ArrowRight className="arrow" />
+          <button className="submit-btn" type="submit" disabled={loading}>
+            <span>{loading ? "Creating Account..." : "Create Account"}</span>
+            {!loading && <ArrowRight className="arrow" />}
           </button>
         </form>
 
@@ -180,4 +216,5 @@ export default function Register() {
     </div>
   );
 }
+
 

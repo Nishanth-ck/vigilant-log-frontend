@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import "../styles/auth.css";
 import axios from "axios";
+import { initializeUserContext } from "../utils/userMapping";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -13,12 +14,17 @@ export default function Login() {
     password: "",
     deviceName: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
+    
     try {
       const payload = {
         email: formData.email,
@@ -32,6 +38,8 @@ export default function Login() {
       );
 
       console.log(response);
+      
+      // Store auth data in sessionStorage
       sessionStorage.setItem(
         "deviceName",
         response?.data?.data?.user?.deviceName
@@ -40,9 +48,16 @@ export default function Login() {
       sessionStorage.setItem("username", response?.data?.data?.user?.username);
       sessionStorage.setItem("id", response?.data?.data?.user?.id);
       sessionStorage.setItem("email", response?.data?.data?.user?.email);
+      
+      // Initialize user context and fetch hostname mapping
+      await initializeUserContext();
+      
       navigate("/landing");
     } catch (err) {
-      console.log(err);
+      console.error("Login error:", err);
+      setError(err.response?.data?.message || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,6 +70,19 @@ export default function Login() {
         </div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
+          {error && (
+            <div style={{ 
+              padding: "12px", 
+              background: "#fee", 
+              border: "1px solid #fcc", 
+              borderRadius: "8px", 
+              color: "#c00",
+              fontSize: "14px"
+            }}>
+              {error}
+            </div>
+          )}
+          
           {/* Email */}
           <label className="field">
             <span className="label">Email</span>
@@ -67,6 +95,7 @@ export default function Login() {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                disabled={loading}
               />
             </div>
           </label>
@@ -108,9 +137,9 @@ export default function Login() {
             </div>
           </label>
 
-          <button className="submit-btn" type="submit">
-            <span>Sign In</span>
-            <ArrowRight className="arrow" />
+          <button className="submit-btn" type="submit" disabled={loading}>
+            <span>{loading ? "Signing In..." : "Sign In"}</span>
+            {!loading && <ArrowRight className="arrow" />}
           </button>
         </form>
 
@@ -126,4 +155,5 @@ export default function Login() {
     </div>
   );
 }
+
 
