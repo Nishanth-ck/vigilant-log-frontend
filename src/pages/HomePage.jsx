@@ -78,7 +78,7 @@ export default function HomePage() {
               <Zap size={16} />
               <span>AI-Powered System Protection</span>
             </div>
-            <h1 className="hero-title">
+            <h1 className="hero-gradient">
               Keep Your System
               <span className="hero-gradient"> Safe & Monitored</span>
             </h1>
