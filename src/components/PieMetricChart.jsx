@@ -23,7 +23,7 @@ export default function PieMetricChart({ labels, values, colors }) {
   };
 
   return (
-    <div className="w-36 h-36">
+    <div style={{ width: "144px", height: "144px" }}>
       <Pie data={data} options={options} />
     </div>
   );

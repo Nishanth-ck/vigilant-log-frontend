@@ -1,4 +1,5 @@
 import PieMetricChart from "./PieMetricChart";
+import "../styles/dashboard.css";
 
 export default function MetricCard({ title, entry }) {
   if (!entry) return null;
@@ -14,42 +15,37 @@ export default function MetricCard({ title, entry }) {
   ].slice(0, values.length);
 
   return (
-    <div className="bg-white rounded-2xl shadow-md p-8 border border-gray-100 hover:shadow-lg transition duration-200">
-      {/* Title */}
-      <h3 className="text-xl font-bold text-gray-800 mb-6">{title}</h3>
+    <div className="metric-card-enhanced">
+      <h3 className="metric-card-title">{title}</h3>
 
-      <div className="flex items-center justify-between gap-6">
+      <div className="metric-card-content">
         {/* Left: Prediction + summary + legend */}
-        <div className="flex flex-col flex-1 space-y-3">
+        <div className="metric-card-left">
           {/* Prediction */}
-          <div>
-            <p className="text-gray-600 text-sm">Prediction:</p>
-            <p className="text-lg font-semibold text-blue-600">
-              {entry.prediction}
-            </p>
+          <div className="metric-prediction-section">
+            <p className="metric-label">Prediction:</p>
+            <p className="metric-prediction">{entry.prediction}</p>
           </div>
 
           {/* Summary */}
-          <p className="text-gray-500 text-sm leading-relaxed max-w-[260px]">
-            {entry.analysis?.summary}
-          </p>
+          <p className="metric-summary">{entry.analysis?.summary}</p>
 
-          {/* CUSTOM LEGEND */}
-          <div className="space-y-1">
+          {/* Legend */}
+          <div className="metric-legend">
             {labels.map((label, index) => (
-              <div key={index} className="flex items-center gap-2 text-sm">
+              <div key={index} className="legend-item">
                 <div
-                  className="w-3 h-3 rounded-sm"
+                  className="legend-color"
                   style={{ backgroundColor: colors[index] }}
                 ></div>
-                <span className="text-gray-600">{label}</span>
+                <span className="legend-label">{label}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Right: Chart */}
-        <div className="flex items-center justify-center">
+        <div className="metric-card-right">
           <PieMetricChart labels={labels} values={values} colors={colors} />
         </div>
       </div>

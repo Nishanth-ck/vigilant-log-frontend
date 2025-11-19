@@ -4,7 +4,10 @@
   display:flex;
   align-items:center;
   justify-content:center;
-  background: linear-gradient(180deg, #eef2ff 0%, rgba(236,253,245,0.6) 100%);
+  background-image: url("/login_background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   padding:40px 20px;
 }
 
@@ -15,7 +18,7 @@
   border-radius:16px;
   padding:28px;
   box-shadow: var(--shadow);
-  border: 1px solid rgba(16,24,40,0.04);
+  border: 1px solid rgba(43, 98, 208, 0.919);
 }
 
 .auth-toggle{
@@ -42,13 +45,13 @@
   box-shadow:0 6px 18px rgba(37,99,235,0.12);
 }
 
-.auth-header{ text-align:center; margin:18px 0 8px;}
-.auth-header h2{ margin:0; font-size:22px; }
-.auth-header .muted{ font-size:14px; color:var(--muted); margin-top:6px }
+.auth-header{ text-align:center; color:#fbfdff; margin:18px 0 8px;}
+.auth-header h2{ margin:0;color:#fbfdff;font-size:22px; }
+.auth-header .muted{ font-size:14px; color:#fbfdff; margin-top:6px }
 
 .auth-form{ margin-top:10px; display:flex; flex-direction:column; gap:12px; }
 
-.field .label{ display:block; margin-bottom:6px; font-size:13px; color:#374151; }
+.field .label{ display:block; margin-bottom:6px; font-size:14px; color:#fefefe; }
 .input-wrap{ position:relative; display:flex; align-items:center; background:#fbfdff; border:1px solid rgba(16,24,40,0.04); padding:10px; border-radius:10px; }
 .input-wrap input{ border:0; outline:none; padding:8px 12px; flex:1; background:transparent; font-size:14px; color:#111827 }
 .input-wrap .icon{ width:18px; height:18px; color:#9ca3af; margin-right:8px; flex:0 0 18px }

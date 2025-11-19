@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import MetricCard from "../components/MetricCard";
 import IndicatorsList from "../components/IndicatorsList";
+import "../styles/dashboard.css";
 
 export default function Dashboard() {
   const [bsod, setBsod] = useState(null);
@@ -50,101 +51,123 @@ export default function Dashboard() {
 
   if (loading)
     return (
-      <div className="w-full h-screen flex items-center justify-center text-gray-500">
-        Loading...
+      <div className="dashboard-root">
+        <Sidebar active="dashboard" />
+        <main className="main">
+          <Header />
+          <div className="loading-container">
+            <div className="spinner"></div>
+            <p className="loading-text">Loading dashboard data...</p>
+          </div>
+        </main>
       </div>
     );
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <aside className="w-64 bg-white shadow-sm border-r border-gray-200 p-8">
-        <h1 className="text-3xl font-bold text-blue-600 mb-10 tracking-tight">
-          VigilantLog
-        </h1>
+    <div className="dashboard-root">
+      <Sidebar active="dashboard" />
+      <main className="main">
+        <Header />
+        <div className="content">
+          {/* Metric Cards */}
+          <section className="metric-cards-grid">
+            <MetricCard title="App Crash" entry={app} />
+            <MetricCard title="BSOD" entry={bsod} />
+            <MetricCard title="Unexpected Shutdown" entry={shutdown} />
+            <MetricCard title="System Hang" entry={hang} />
+          </section>
 
-        <nav className="space-y-6 text-lg">
-          <a href="/dashboard" className="text-blue-600 font-semibold block">
-            Dashboard
-          </a>
-          <a
-            href="/system-health"
-            className="hover:text-blue-500 text-gray-700 block"
-          >
-            System Health
-          </a>
-          <a href="/analysis" className="hover:text-blue-500 text-gray-700 block">
-            Analysis
-          </a>
-          <a href="/file-backups" className="hover:text-blue-500 text-gray-700 block">
-            File Backups
-          </a>
-          <a href="/file-settings" className="hover:text-blue-500 text-gray-700 block">
-            File Settings
-          </a>
-        </nav>
-      </aside>
+          {/* Analysis Panels */}
+          <section className="analysis-panels">
+            <div className="analysis-panel">
+              <h4 className="analysis-panel-title">BSOD Analysis</h4>
+              <p className="analysis-panel-summary">
+                {bsod?.analysis?.summary || "No analysis available"}
+              </p>
+              <IndicatorsList indicators={bsod?.analysis?.indicators || []} />
+            </div>
 
-      <main className="flex-1 p-10 bg-gray-50">
-        {/* Header */}
-        <header className="mb-10">
-          <h2 className="text-4xl font-bold text-gray-800 tracking-tight">
-            Dashboard
-          </h2>
-          <p className="text-gray-500 mt-1 text-lg">
-            System Prediction Overview
-          </p>
-        </header>
+            <div className="analysis-panel">
+              <h4 className="analysis-panel-title">App Crash Analysis</h4>
+              <p className="analysis-panel-summary">
+                {app?.analysis?.summary || "No analysis available"}
+              </p>
+              <IndicatorsList indicators={app?.analysis?.indicators || []} />
+            </div>
 
-        {/* Metric Cards — cleaner spacing */}
-        <section className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-2 gap-12">
-          <MetricCard title="App Crash" entry={app} />
-          <MetricCard title="BSOD" entry={bsod} />
-          <MetricCard title="Unexpected Shutdown" entry={shutdown} />
-          <MetricCard title="System Hang" entry={hang} />
-        </section>
+            <div className="analysis-panel">
+              <h4 className="analysis-panel-title">
+                Unexpected Shutdown Analysis
+              </h4>
+              <p className="analysis-panel-summary">
+                {shutdown?.analysis?.summary || "No analysis available"}
+              </p>
+              <IndicatorsList indicators={shutdown?.analysis?.indicators || []} />
+            </div>
 
-        {/* Divider */}
-        <div className="my-12 border-t border-gray-200"></div>
-
-        {/* Analysis Panels — full width + better spacing */}
-        <section className="space-y-10">
-          <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-100">
-            <h4 className="text-2xl font-semibold mb-4">BSOD Analysis</h4>
-            <p className="text-gray-700 mb-6 leading-relaxed">
-              {bsod?.analysis?.summary}
-            </p>
-            <IndicatorsList indicators={bsod?.analysis?.indicators} />
-          </div>
-
-          <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-100">
-            <h4 className="text-2xl font-semibold mb-4">App Crash Analysis</h4>
-            <p className="text-gray-700 mb-6 leading-relaxed">
-              {app?.analysis?.summary}
-            </p>
-            <IndicatorsList indicators={app?.analysis?.indicators} />
-          </div>
-
-          <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-100">
-            <h4 className="text-2xl font-semibold mb-4">
-              Unexpected Shutdown Analysis
-            </h4>
-            <p className="text-gray-700 mb-6 leading-relaxed">
-              {shutdown?.analysis?.summary}
-            </p>
-            <IndicatorsList indicators={shutdown?.analysis?.indicators} />
-          </div>
-
-          <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-100">
-            <h4 className="text-2xl font-semibold mb-4">
-              System Hang Analysis
-            </h4>
-            <p className="text-gray-700 mb-6 leading-relaxed">
-              {hang?.analysis?.summary}
-            </p>
-            <IndicatorsList indicators={hang?.analysis?.indicators} />
-          </div>
-        </section>
+            <div className="analysis-panel">
+              <h4 className="analysis-panel-title">System Hang Analysis</h4>
+              <p className="analysis-panel-summary">
+                {hang?.analysis?.summary || "No analysis available"}
+              </p>
+              <IndicatorsList indicators={hang?.analysis?.indicators || []} />
+            </div>
+          </section>
+        </div>
       </main>
     </div>
+  );
+}
+
+function Sidebar({ active }) {
+  const navItems = [
+    { id: "dashboard", label: "Dashboard", icon: "📊", href: "/dashboard" },
+    {
+      id: "health",
+      label: "System Health",
+      icon: "💚",
+      href: "/system-health",
+    },
+    { id: "analysis", label: "Analysis", icon: "🔍", href: "/analysis" },
+    { id: "file-backups", label: "File Backups", icon: "💾", href: "/file-backups" },
+    { id: "file-settings", label: "File Settings", icon: "⚙️", href: "/file-settings" },
+  ];
+
+  return (
+    <aside className="sidebar">
+      <div className="sidebar-brand">
+        <span className="brand-icon">⚡</span>
+        <span className="brand-text">VigilantLog</span>
+      </div>
+      <nav className="sidebar-nav">
+        {navItems.map((item) => (
+          <a
+            key={item.id}
+            href={item.href}
+            className={`nav-item ${active === item.id ? "active" : ""}`}
+          >
+            <span className="nav-icon">{item.icon}</span>
+            {item.label}
+          </a>
+        ))}
+      </nav>
+    </aside>
+  );
+}
+
+function Header() {
+  return (
+    <header className="header">
+      <div>
+        <h1 className="header-title">Dashboard</h1>
+        <p className="header-subtitle">System Prediction Overview</p>
+      </div>
+      <div className="header-right">
+        <div className="status-badge">
+          <span className="status-dot"></span>
+          Live
+        </div>
+      </div>
+    </header>
   );
 }
