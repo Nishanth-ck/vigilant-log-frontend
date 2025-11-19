@@ -4,6 +4,8 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Auth from "./pages/Auth";
 import LandingPage from "./pages/LandingPage";
 import Dashboard from "./pages/Dashboard";
@@ -18,7 +20,9 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/auth" replace />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/landing" element={<LandingPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
@@ -27,7 +31,7 @@ export default function App() {
         <Route path="/file-backups" element={<FileBackups />} />
         <Route path="/file-settings" element={<FileSettings />} />
         <Route path="/installer" element={<InstallerGuide />} />
-        <Route path="*" element={<Navigate to="/auth" replace />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
   );

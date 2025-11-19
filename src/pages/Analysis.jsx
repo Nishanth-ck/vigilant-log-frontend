@@ -184,6 +184,8 @@ function Sidebar({ active }) {
       href: "/system-health",
     },
     { id: "analysis", label: "Analysis", icon: "🔍", href: "/analysis" },
+    { id: "file-backups", label: "File Backups", icon: "💾", href: "/file-backups" },
+    { id: "file-settings", label: "File Settings", icon: "⚙️", href: "/file-settings" },
   ];
 
   return (
