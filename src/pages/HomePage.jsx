@@ -86,24 +86,14 @@ export default function HomePage() {
               Advanced real-time system monitoring with AI-powered predictions. 
               Detect issues before they happen and protect your critical files automatically.
             </p>
-            <div className="hero-buttons">
-              <button className="btn-hero-primary" onClick={() => navigate("/register")}>
-                Start Free Trial
-                <ArrowRight size={20} />
-              </button>
-              <button className="btn-hero-secondary" onClick={() => navigate("/login")}>
-                <Eye size={20} />
-                View Demo
-              </button>
-            </div>
             <div className="hero-stats">
               <div className="stat-item">
                 <CheckCircle size={20} className="stat-icon" />
-                <span>99.9% Uptime</span>
+                <span>Accurate</span>
               </div>
               <div className="stat-item">
                 <Server size={20} className="stat-icon" />
-                <span>24/7 Monitoring</span>
+                <span>Monitoring</span>
               </div>
               <div className="stat-item">
                 <Lock size={20} className="stat-icon" />
