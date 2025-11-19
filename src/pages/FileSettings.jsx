@@ -27,13 +27,13 @@ export default function FileSettings() {
   const [backupFolder, setBackupFolder] = useState("");
   const [status, setStatus] = useState("");
   const [statusType, setStatusType] = useState("info");
-  const [deviceName, setDeviceName] = useState("");
+  const [hostname, setHostname] = useState("");
 
   const fetchState = async () => {
     try {
-      const deviceId = sessionStorage.getItem("deviceName") || "default";
+      const savedHostname = localStorage.getItem("hostname") || "";
       const res = await fetch(
-        `${FILE_MONITORING_API_URL}/api/file-monitor/state?deviceId=${deviceId}`
+        `${FILE_MONITORING_API_URL}/api/file-monitor/state?deviceId=${savedHostname || "default"}`
       );
       if (res.ok) {
         const data = await res.json();
@@ -54,8 +54,8 @@ export default function FileSettings() {
 
   useEffect(() => {
     fetchState();
-    const device = sessionStorage.getItem("deviceName") || "default";
-    setDeviceName(device);
+    const savedHostname = localStorage.getItem("hostname") || "";
+    setHostname(savedHostname);
   }, []);
 
   const showStatus = (message, type = "info") => {
@@ -67,7 +67,13 @@ export default function FileSettings() {
   const saveConfig = async () => {
     showStatus("Saving configuration...", "info");
     try {
-      const deviceId = sessionStorage.getItem("deviceName") || "default";
+      const deviceId = hostname || "default";
+      
+      // Save hostname to localStorage
+      if (hostname) {
+        localStorage.setItem("hostname", hostname);
+      }
+      
       const res = await fetch(`${FILE_MONITORING_API_URL}/api/file-monitor/state`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -120,7 +126,7 @@ export default function FileSettings() {
   const startMonitoring = async () => {
     showStatus("Starting monitoring...", "info");
     try {
-      const deviceId = sessionStorage.getItem("deviceName") || "default";
+      const deviceId = hostname || "default";
       const res = await fetch(`${FILE_MONITORING_API_URL}/api/file-monitor/start`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -142,7 +148,7 @@ export default function FileSettings() {
   const stopMonitoring = async () => {
     showStatus("Stopping monitoring...", "info");
     try {
-      const deviceId = sessionStorage.getItem("deviceName") || "default";
+      const deviceId = hostname || "default";
       const res = await fetch(`${FILE_MONITORING_API_URL}/api/file-monitor/stop`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -194,8 +200,8 @@ export default function FileSettings() {
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "6px 12px", borderRadius: "8px", background: "#f3f4f6" }}>
-            <span style={{ fontSize: "12px", color: "#6b7280", fontWeight: 500 }}>Device:</span>
-            <span style={{ fontSize: "14px", fontWeight: 600, color: "#374151" }}>{deviceName}</span>
+            <span style={{ fontSize: "12px", color: "#6b7280", fontWeight: 500 }}>Hostname:</span>
+            <span style={{ fontSize: "14px", fontWeight: 600, color: "#374151", fontFamily: "monospace" }}>{hostname || "Not Set"}</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "6px 12px", borderRadius: "9999px", background: "white", boxShadow: "0 1px 2px rgba(0,0,0,0.05)", border: "1px solid #e5e7eb" }}>
             <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: monitoring ? "#10b981" : "#9ca3af", animation: monitoring ? "pulse 2s infinite" : "none" }}></div>
@@ -233,27 +239,62 @@ export default function FileSettings() {
 
       {/* Main Content */}
       <main style={{ marginLeft: "256px", marginTop: "64px", padding: "32px" }}>
-        {/* Device Info Card */}
-        <div style={{ marginBottom: "24px", background: "linear-gradient(to right, #eef2ff, #f5f3ff)", borderRadius: "16px", padding: "20px", border: "1px solid #c7d2fe", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <div style={{ padding: "10px", background: "#dbeafe", borderRadius: "12px" }}>
-                <HardDrive size={20} color="#2563eb" />
-              </div>
-              <div>
-                <p style={{ fontSize: "12px", color: "#4b5563", fontWeight: 500, margin: "0 0 2px 0" }}>Connected Device</p>
-                <p style={{ fontSize: "18px", fontWeight: "bold", color: "#111827", margin: 0 }}>{deviceName}</p>
-              </div>
-            </div>
-            <div style={{ textAlign: "right" }}>
-              <p style={{ fontSize: "12px", color: "#6b7280", margin: "0 0 4px 0" }}>Status</p>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: monitoring ? "#10b981" : "#9ca3af" }}></div>
-                <span style={{ fontSize: "14px", fontWeight: 600, color: monitoring ? "#059669" : "#6b7280" }}>
-                  {monitoring ? "Monitoring Active" : "Monitoring Stopped"}
-                </span>
-              </div>
-            </div>
+        {/* Hostname Configuration Card */}
+        <div style={{ background: "white", borderRadius: "16px", boxShadow: "0 4px 6px rgba(0,0,0,0.1)", border: "1px solid #e5e7eb", padding: "24px", marginBottom: "24px" }}>
+          <h3 style={{ fontSize: "20px", fontWeight: 600, color: "#111827", margin: "0 0 8px 0", display: "flex", alignItems: "center", gap: "8px" }}>
+            <HardDrive size={24} color="#6366f1" />
+            Device Hostname
+          </h3>
+          <p style={{ fontSize: "14px", color: "#6b7280", margin: "0 0 16px 0" }}>Enter your computer's hostname to sync with the desktop agent</p>
+          
+          <div style={{ marginBottom: "16px", padding: "12px", background: "#eff6ff", border: "1px solid #93c5fd", borderRadius: "8px" }}>
+            <p style={{ margin: "0 0 8px 0", fontSize: "14px", fontWeight: 600, color: "#1e40af" }}>
+              🔍 How to find your hostname:
+            </p>
+            <p style={{ margin: "0 0 4px 0", fontSize: "13px", color: "#1e40af" }}>
+              <strong>Windows:</strong> Open Command Prompt → type <code style={{ background: "#dbeafe", padding: "2px 6px", borderRadius: "4px", fontFamily: "monospace" }}>hostname</code>
+            </p>
+            <p style={{ margin: 0, fontSize: "13px", color: "#1e40af" }}>
+              <strong>Mac/Linux:</strong> Open Terminal → type <code style={{ background: "#dbeafe", padding: "2px 6px", borderRadius: "4px", fontFamily: "monospace" }}>hostname</code>
+            </p>
+          </div>
+
+          <div style={{ display: "flex", gap: "12px" }}>
+            <input
+              type="text"
+              value={hostname}
+              onChange={(e) => setHostname(e.target.value)}
+              placeholder="e.g., DESKTOP-ABC123 or Johns-MacBook"
+              style={{
+                flex: 1,
+                padding: "12px 16px",
+                border: "1px solid #d1d5db",
+                borderRadius: "12px",
+                fontSize: "14px",
+                outline: "none",
+                fontFamily: "monospace"
+              }}
+            />
+            <button
+              onClick={saveConfig}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "12px 24px",
+                background: "linear-gradient(to right, #2563eb, #4f46e5)",
+                color: "white",
+                border: "none",
+                borderRadius: "12px",
+                fontWeight: 500,
+                cursor: "pointer",
+                boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+                fontSize: "14px"
+              }}
+            >
+              <Save size={20} />
+              Save Hostname
+            </button>
           </div>
         </div>
 
@@ -285,6 +326,7 @@ export default function FileSettings() {
             <div>
               <h3 style={{ fontWeight: 600, color: "#111827", margin: "0 0 8px 0" }}>How It Works</h3>
               <ul style={{ margin: 0, paddingLeft: "20px", color: "#374151", fontSize: "14px", lineHeight: "1.6" }}>
+                <li>Enter your device hostname above and save it</li>
                 <li>Configure backup and monitor folders below</li>
                 <li>Click "Save Configuration" to persist settings</li>
                 <li>Start monitoring - agent syncs within 60 seconds</li>
@@ -533,3 +575,4 @@ export default function FileSettings() {
     </div>
   );
 }
+

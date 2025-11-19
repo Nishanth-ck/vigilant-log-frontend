@@ -26,7 +26,7 @@ export default function FileBackups() {
   const fetchBackups = async () => {
     setLoading(true);
     try {
-      const deviceId = sessionStorage.getItem("deviceName") || "default";
+      const deviceId = localStorage.getItem("hostname") || "default";
 
       const localRes = await fetch(
         `${FILE_MONITORING_API_URL}/api/file-monitor/backups/local?deviceId=${deviceId}`
@@ -55,7 +55,7 @@ export default function FileBackups() {
   const showStatus = (message, type = "info") => {
     setUploadStatus(message);
     setStatusType(type);
-    setTimeout(() => setUploadStatus(""), 3000);
+        setTimeout(() => setUploadStatus(""), 3000);
   };
 
   // Note: Cloud uploads are handled automatically by the desktop agent
@@ -75,7 +75,7 @@ export default function FileBackups() {
       const url = isCloud
         ? `${FILE_MONITORING_API_URL}/api/file-monitor/backups/cloud/${filename}`
         : `${FILE_MONITORING_API_URL}/api/file-monitor/backups/local/${filename}`;
-
+      
       const res = await fetch(url, { method: "DELETE" });
       if (res.ok) {
         showStatus(`Deleted ${filename}`, "success");
@@ -202,13 +202,13 @@ export default function FileBackups() {
               </div>
             </div>
           </div>
-          <button
-            onClick={fetchBackups}
+            <button
+              onClick={fetchBackups}
             disabled={loading}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
               padding: "12px 24px",
               background: "linear-gradient(to right, #a855f7, #ec4899)",
               color: "white",
@@ -219,12 +219,12 @@ export default function FileBackups() {
               boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
               opacity: loading ? 0.5 : 1,
               fontSize: "14px"
-            }}
-          >
+              }}
+            >
             <RefreshCw size={20} style={{ animation: loading ? "spin 1s linear infinite" : "none" }} />
-            Refresh
-          </button>
-        </div>
+              Refresh
+            </button>
+          </div>
 
         {/* Info Banner */}
         <div style={{
@@ -233,7 +233,7 @@ export default function FileBackups() {
           borderRadius: "12px",
           border: "1px solid #93c5fd",
           background: "linear-gradient(to right, #dbeafe, #e0e7ff)",
-          display: "flex",
+                display: "flex",
           alignItems: "flex-start",
           gap: "12px"
         }}>
@@ -247,10 +247,10 @@ export default function FileBackups() {
               The desktop agent syncs every 60 seconds.
             </p>
           </div>
-        </div>
-
+          </div>
+          
         {/* Status Alert */}
-        {uploadStatus && (
+          {uploadStatus && (
           <div style={{
             marginBottom: "24px",
             padding: "16px",
@@ -295,7 +295,7 @@ export default function FileBackups() {
           </div>
 
           <div style={{ padding: "24px" }}>
-            {localFiles.length === 0 ? (
+          {localFiles.length === 0 ? (
               <div style={{ textAlign: "center", padding: "48px 0" }}>
                 <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "64px", height: "64px", background: "#dbeafe", borderRadius: "50%", marginBottom: "16px" }}>
                   <Folder size={32} color="#60a5fa" />
@@ -312,15 +312,15 @@ export default function FileBackups() {
                     <a href="/file-settings" style={{ fontWeight: 600, textDecoration: "underline", color: "#1e40af" }}>
                       File Settings
                     </a>
-                  </p>
+              </p>
                 </div>
-              </div>
-            ) : (
+            </div>
+          ) : (
               <div style={{ display: "grid", gap: "12px" }}>
                 {localFiles.map((file, idx) => (
                   <div
                     key={idx}
-                    style={{
+                style={{
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "space-between",
@@ -347,23 +347,23 @@ export default function FileBackups() {
                       </div>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <button
-                        onClick={() => downloadFile(file.name, false)}
+                        <button
+                          onClick={() => downloadFile(file.name, false)}
                         style={{ padding: "8px", background: "#3b82f6", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}
-                        title="Download"
-                      >
-                        <Download size={16} />
-                      </button>
-                      <button
-                        onClick={() => deleteFile(file.name, false)}
+                          title="Download"
+                        >
+                          <Download size={16} />
+                        </button>
+                        <button
+                          onClick={() => deleteFile(file.name, false)}
                         style={{ padding: "8px", background: "#ef4444", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}
-                        title="Delete"
-                      >
-                        <Trash2 size={16} />
-                      </button>
+                          title="Delete"
+                        >
+                          <Trash2 size={16} />
+                        </button>
                     </div>
                   </div>
-                ))}
+                  ))}
               </div>
             )}
           </div>
@@ -388,7 +388,7 @@ export default function FileBackups() {
           </div>
 
           <div style={{ padding: "24px" }}>
-            {cloudFiles.length === 0 ? (
+          {cloudFiles.length === 0 ? (
               <div style={{ textAlign: "center", padding: "48px 0" }}>
                 <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "64px", height: "64px", background: "#f3e8ff", borderRadius: "50%", marginBottom: "16px" }}>
                   <Cloud size={32} color="#c084fc" />
@@ -400,12 +400,12 @@ export default function FileBackups() {
                   Cloud backups are automatically uploaded from your local backups. Start monitoring to begin backing up files.
                 </p>
               </div>
-            ) : (
+          ) : (
               <div style={{ display: "grid", gap: "12px" }}>
                 {cloudFiles.map((file, idx) => (
                   <div
                     key={idx}
-                    style={{
+                style={{
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "space-between",
@@ -432,25 +432,25 @@ export default function FileBackups() {
                       </div>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <button
-                        onClick={() => downloadFile(file.name, true)}
+                        <button
+                          onClick={() => downloadFile(file.name, true)}
                         style={{ padding: "8px", background: "#a855f7", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}
-                        title="Download"
-                      >
-                        <Download size={16} />
-                      </button>
-                      <button
-                        onClick={() => deleteFile(file.name, true)}
+                          title="Download"
+                        >
+                          <Download size={16} />
+                        </button>
+                        <button
+                          onClick={() => deleteFile(file.name, true)}
                         style={{ padding: "8px", background: "#ef4444", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}
-                        title="Delete"
-                      >
-                        <Trash2 size={16} />
-                      </button>
+                          title="Delete"
+                        >
+                          <Trash2 size={16} />
+                        </button>
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
+                  ))}
+            </div>
+          )}
           </div>
         </div>
       </main>
