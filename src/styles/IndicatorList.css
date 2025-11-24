@@ -1,0 +1,228 @@
+/* Indicators Container */
+.indicators-container {
+  margin-bottom: 32px;
+}
+
+.indicators-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e3f2fd;
+}
+
+.indicators-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #283593;
+  margin: 0;
+}
+
+.indicators-count {
+  background-color: #e8eaf6;
+  color: #3949ab;
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Empty State */
+.indicators-empty {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #f8f9fc;
+  border-radius: 12px;
+  border: 2px dashed #c5cae9;
+}
+
+.indicators-empty-icon {
+  width: 64px;
+  height: 64px;
+  color: #9fa8da;
+  margin: 0 auto 16px;
+}
+
+.indicators-empty-text {
+  color: #757575;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Indicators List */
+.indicators-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Indicator Card */
+.indicator-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px 24px;
+  border-left: 4px solid #e0e0e0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.indicator-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Severity Colors */
+.indicator-card.critical {
+  border-left-color: #ef5350;
+  background: linear-gradient(to right, #ffebee 0%, #ffffff 8px);
+}
+
+.indicator-card.warning {
+  border-left-color: #ffa726;
+  background: linear-gradient(to right, #fff3e0 0%, #ffffff 8px);
+}
+
+.indicator-card.hardware {
+  border-left-color: #42a5f5;
+  background: linear-gradient(to right, #e3f2fd 0%, #ffffff 8px);
+}
+
+.indicator-card.info {
+  border-left-color: #66bb6a;
+  background: linear-gradient(to right, #e8f5e9 0%, #ffffff 8px);
+}
+
+/* Indicator Main Content */
+.indicator-main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.indicator-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Badge Styles */
+.indicator-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.indicator-badge.critical {
+  background-color: #ffcdd2;
+  color: #c62828;
+}
+
+.indicator-badge.warning {
+  background-color: #ffe0b2;
+  color: #e65100;
+}
+
+.indicator-badge.hardware {
+  background-color: #bbdefb;
+  color: #1565c0;
+}
+
+.indicator-badge.info {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+}
+
+/* Date */
+.indicator-date {
+  font-size: 13px;
+  color: #757575;
+  font-weight: 500;
+}
+
+/* Type */
+.indicator-type {
+  font-size: 18px;
+  font-weight: 600;
+  color: #212121;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Title */
+.indicator-title {
+  font-size: 15px;
+  color: #424242;
+  font-weight: 500;
+  line-height: 1.5;
+  padding: 8px 12px;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+}
+
+/* Description */
+.indicator-description {
+  font-size: 14px;
+  color: #616161;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .indicators-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .indicator-card {
+    padding: 16px 18px;
+  }
+
+  .indicator-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .indicator-type {
+    font-size: 16px;
+  }
+
+  .indicator-title {
+    font-size: 14px;
+  }
+
+  .indicator-description {
+    font-size: 13px;
+  }
+}
+
+/* Animation */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.indicator-card {
+  animation: slideIn 0.3s ease forwards;
+}
+
+.indicator-card:nth-child(1) { animation-delay: 0.05s; }
+.indicator-card:nth-child(2) { animation-delay: 0.1s; }
+.indicator-card:nth-child(3) { animation-delay: 0.15s; }
+.indicator-card:nth-child(4) { animation-delay: 0.2s; }
+.indicator-card:nth-child(5) { animation-delay: 0.25s; }

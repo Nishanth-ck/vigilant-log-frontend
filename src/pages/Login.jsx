@@ -37,7 +37,7 @@ export default function Login() {
         payload
       );
 
-      console.log(response);
+      // console.log(response);
       
       // Store auth data in sessionStorage
       sessionStorage.setItem(

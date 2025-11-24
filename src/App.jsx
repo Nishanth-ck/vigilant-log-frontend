@@ -14,6 +14,7 @@ import SystemHealth from "./pages/SystemHealth";
 import Analysis from "./pages/Analysis";
 import InstallerGuide from "./pages/InstallerGuide";
 import FileBackups from "./pages/FileBackups";
+import AppCrashPage from "./pages/AppCrashPage.jsx";
 import FileSettings from "./pages/FileSettings";
 
 
@@ -31,6 +32,10 @@ export default function App() {
         <Route path="/analysis" element={<Analysis />} />
         <Route path="/file-backups" element={<FileBackups />} />
         <Route path="/file-settings" element={<FileSettings />} />
+        <Route path="/analysis/app-crash" element={<AppCrashPage />} />
+        <Route path="/analysis/bsod" element={<AppCrashPage />} />
+        <Route path="/analysis/shutdown" element={<AppCrashPage />} />
+        <Route path="/analysis/hang" element={<AppCrashPage />} />  
         <Route path="/installer" element={<InstallerGuide />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

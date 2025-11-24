@@ -13,7 +13,7 @@ export default function InstallerGuide() {
         {/* Installer 1: System Analytics & Predictions */}
         <section style={{ marginBottom: "40px", padding: "20px", background: "#f8fafc", borderRadius: "12px" }}>
           <h2 style={{ color: "#2563eb", marginBottom: "16px" }}>
-            📊 System Analytics Monitor (Windows SDK Required)
+            System Analytics Monitor (Windows SDK Required)
           </h2>
           <p style={{ marginBottom: "16px", color: "#475569" }}>
             <strong>Features:</strong> BSOD prediction, app crash detection, system health monitoring, and analytics dashboard.

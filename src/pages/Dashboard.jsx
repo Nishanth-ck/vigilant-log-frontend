@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import MetricCard from "../components/MetricCard";
 import IndicatorsList from "../components/IndicatorsList";
+import "../styles/IndicatorList.css";
 import "../styles/dashboard.css";
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
   const [bsod, setBsod] = useState(null);
@@ -34,6 +36,8 @@ export default function Dashboard() {
             { deviceName }
           ),
         ]);
+
+        // console.log(b, a, s, h);
 
         setBsod(b.data.data);
         setApp(a.data.data);
@@ -70,11 +74,26 @@ export default function Dashboard() {
         <Header />
         <div className="content">
           {/* Metric Cards */}
-          <section className="metric-cards-grid">
+          {/* <section className="metric-cards-grid">
             <MetricCard title="App Crash" entry={app} />
             <MetricCard title="BSOD" entry={bsod} />
             <MetricCard title="Unexpected Shutdown" entry={shutdown} />
             <MetricCard title="System Hang" entry={hang} />
+          </section> */}
+
+          <section className="metric-cards-grid">
+            <Link to="/analysis/app-crash">
+              <MetricCard title="App Crash" entry={app} />
+            </Link>
+            <Link to="/analysis/bsod">
+              <MetricCard title="BSOD" entry={bsod} />
+            </Link>
+            <Link to="/analysis/shutdown">
+              <MetricCard title="Unexpected Shutdown" entry={shutdown} />
+            </Link>
+            <Link to="/analysis/hang">
+              <MetricCard title="System Hang" entry={hang} />
+            </Link>
           </section>
 
           {/* Analysis Panels */}
@@ -102,7 +121,9 @@ export default function Dashboard() {
               <p className="analysis-panel-summary">
                 {shutdown?.analysis?.summary || "No analysis available"}
               </p>
-              <IndicatorsList indicators={shutdown?.analysis?.indicators || []} />
+              <IndicatorsList
+                indicators={shutdown?.analysis?.indicators || []}
+              />
             </div>
 
             <div className="analysis-panel">
@@ -121,22 +142,32 @@ export default function Dashboard() {
 
 function Sidebar({ active }) {
   const navItems = [
-    { id: "dashboard", label: "Dashboard", icon: "📊", href: "/dashboard" },
+    { id: "dashboard", label: "Dashboard", icon: "", href: "/dashboard" },
+    // {
+    //   id: "health",
+    //   label: "System Health",
+    //   icon: "💚",
+    //   href: "/system-health",
+    // },
+    { id: "analysis", label: "Analysis", icon: "", href: "/analysis" },
     {
-      id: "health",
-      label: "System Health",
-      icon: "💚",
-      href: "/system-health",
+      id: "file-backups",
+      label: "File Backups",
+      icon: "",
+      href: "/file-backups",
     },
-    { id: "analysis", label: "Analysis", icon: "🔍", href: "/analysis" },
-    { id: "file-backups", label: "File Backups", icon: "💾", href: "/file-backups" },
-    { id: "file-settings", label: "File Settings", icon: "⚙️", href: "/file-settings" },
+    {
+      id: "file-settings",
+      label: "File Settings",
+      icon: "",
+      href: "/file-settings",
+    },
   ];
 
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">
-        <span className="brand-icon">⚡</span>
+        {/* <span className="brand-icon">⚡</span> */}
         <span className="brand-text">VigilantLog</span>
       </div>
       <nav className="sidebar-nav">
