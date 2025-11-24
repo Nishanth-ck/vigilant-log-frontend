@@ -127,16 +127,16 @@ export default function SystemHealth() {
 
 function Sidebar({ active }) {
   const navItems = [
-    { id: "dashboard", label: "Dashboard", icon: "📊", href: "/dashboard" },
-    {
-      id: "health",
-      label: "System Health",
-      icon: "💚",
-      href: "/system-health",
-    },
-    { id: "analysis", label: "Analysis", icon: "🔍", href: "/analysis" },
-    { id: "file-backups", label: "File Backups", icon: "💾", href: "/file-backups" },
-    { id: "file-settings", label: "File Settings", icon: "⚙️", href: "/file-settings" },
+    { id: "dashboard", label: "Dashboard", icon: "", href: "/dashboard" },
+    // {
+    //   id: "health",
+    //   label: "System Health",
+    //   icon: "💚",
+    //   href: "/system-health",
+    // },
+    { id: "analysis", label: "Analysis", icon: "", href: "/analysis" },
+    { id: "file-backups", label: "File Backups", icon: "", href: "/file-backups" },
+    { id: "file-settings", label: "File Settings", icon: "", href: "/file-settings" },
   ];
 
   return (

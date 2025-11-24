@@ -1,0 +1,240 @@
+/* Container Styles */
+.recovery-container {
+  min-height: 100vh;
+  background-color: #f8f9fc;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Header Styles */
+.recovery-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e1e4e8;
+  padding: 24px 32px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.recovery-header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.recovery-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.recovery-badge {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Content Styles */
+.recovery-content {
+  max-width: 1200px;
+  margin: 32px auto;
+  padding: 0 32px;
+}
+
+/* Loading Styles */
+.recovery-loading-container {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.recovery-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e3f2fd;
+  border-top: 4px solid #1976d2;
+  border-radius: 50%;
+  margin: 0 auto 24px;
+  animation: recovery-spin 1s linear infinite;
+}
+
+@keyframes recovery-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.recovery-loading-text {
+  color: #5f6368;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Analysis Container */
+.recovery-analysis-container {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  line-height: 1.6;
+}
+
+/* Section Styles */
+.recovery-section {
+  margin-bottom: 32px;
+}
+
+/* Typography Styles */
+.recovery-h1 {
+  font-size: 32px;
+  font-weight: 600;
+  color: #1a237e;
+  margin-bottom: 24px;
+  margin-top: 0;
+  padding-bottom: 12px;
+  border-bottom: 3px solid #e3f2fd;
+}
+
+.recovery-h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #283593;
+  margin-bottom: 20px;
+  margin-top: 32px;
+}
+
+.recovery-h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #3949ab;
+  margin-bottom: 16px;
+  margin-top: 24px;
+}
+
+.recovery-paragraph {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #424242;
+  margin-bottom: 12px;
+}
+
+.recovery-bold {
+  font-weight: 600;
+  color: #1e88e5;
+}
+
+/* List Styles */
+.recovery-list {
+  margin-left: 24px;
+  margin-bottom: 16px;
+  list-style-type: disc;
+  padding-left: 0;
+}
+
+.recovery-ordered-list {
+  margin-left: 24px;
+  margin-bottom: 16px;
+  padding-left: 0;
+}
+
+.recovery-list li,
+.recovery-ordered-list li {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #424242;
+  margin-bottom: 8px;
+  padding-left: 8px;
+}
+
+/* Horizontal Rule */
+.recovery-hr {
+  border: none;
+  border-top: 2px solid #e3f2fd;
+  margin: 32px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .recovery-header {
+    padding: 20px 16px;
+  }
+
+  .recovery-header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .recovery-title {
+    font-size: 24px;
+  }
+
+  .recovery-content {
+    margin: 20px auto;
+    padding: 0 16px;
+  }
+
+  .recovery-analysis-container {
+    padding: 24px;
+  }
+
+  .recovery-h1 {
+    font-size: 26px;
+  }
+
+  .recovery-h2 {
+    font-size: 20px;
+  }
+
+  .recovery-h3 {
+    font-size: 16px;
+  }
+
+  .recovery-paragraph,
+  .recovery-list li,
+  .recovery-ordered-list li {
+    font-size: 14px;
+  }
+}
+
+/* Link Styles (if URLs are in the markdown) */
+.recovery-analysis-container a {
+  color: #1976d2;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-bottom-color 0.2s ease;
+}
+
+.recovery-analysis-container a:hover {
+  border-bottom-color: #1976d2;
+}
+
+/* Code Block Styles (if code is in the markdown) */
+.recovery-analysis-container code {
+  background-color: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 14px;
+  color: #d32f2f;
+}
+
+.recovery-analysis-container pre {
+  background-color: #f5f5f5;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  border-left: 4px solid #1976d2;
+}
+
+.recovery-analysis-container pre code {
+  background-color: transparent;
+  padding: 0;
+  color: #424242;
+}

@@ -3,6 +3,7 @@
 /* ==================== ROOT & VARIABLES ==================== */
 :root {
   --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-secondary: linear-gradient(135deg, #0b0c10 0%, #1d1c1e 100%);
   --color-primary: #667eea;
   --color-secondary: #764ba2;
   --color-success: #00d4bd;
@@ -24,7 +25,8 @@
 .dashboard-root {
   display: flex;
   min-height: 100vh;
-  background: var(--gradient-primary);
+  /* background: var(--gradient-primary); */
+  background-color: #cdd1e1a0;
   font-family: "Inter", system-ui, sans-serif;
   color: var(--color-text);
 }
@@ -69,7 +71,9 @@
 }
 
 .brand-text {
-  background: var(--gradient-primary);
+  /* background: var(--gradient-primary); */
+  background: var(--gradient-secondary);
+  font-size: 32px;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -144,7 +148,7 @@
 }
 
 .status-badge {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
@@ -1182,6 +1186,7 @@
   box-shadow: var(--shadow-md);
   border: 1px solid rgba(102, 126, 234, 0.08);
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .metric-card-enhanced:hover {
@@ -1324,7 +1329,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .loading-text {
@@ -1357,11 +1364,11 @@
   .metric-cards-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .analysis-panel {
     padding: 20px;
   }
-  
+
   .analysis-panel-title {
     font-size: 18px;
   }

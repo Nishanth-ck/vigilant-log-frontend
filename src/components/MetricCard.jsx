@@ -1,8 +1,9 @@
 import PieMetricChart from "./PieMetricChart";
 import "../styles/dashboard.css";
 
-export default function MetricCard({ title, entry }) {
-  if (!entry) return null;
+export default function MetricCard({ title, entry}) {
+  // if (!entry) return null;
+  if (!entry) return <div>No data available</div>;
 
   const labels = Object.keys(entry.confidence);
   const values = Object.values(entry.confidence);
