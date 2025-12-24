@@ -827,6 +827,25 @@
   }
 }
 
+/* ==================== BACKUP STATS ==================== */
+.backup-stats {
+  display: flex;
+  gap: 12px;
+}
+
+.backup-stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(79, 70, 229, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(79, 70, 229, 0.1);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
 /* 
 :root {
   --primary: #2563eb;

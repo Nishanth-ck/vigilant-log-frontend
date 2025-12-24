@@ -54,8 +54,31 @@
 .auth-form{ margin-top:10px; display:flex; flex-direction:column; gap:12px; }
 
 .field .label{ display:block; margin-bottom:6px; font-size:14px; color:#fefefe; }
-.input-wrap{ position:relative; display:flex; align-items:center; background:#fbfdff; border:1px solid rgba(16,24,40,0.04); padding:10px; border-radius:10px; }
-.input-wrap input{ border:0; outline:none; padding:8px 12px; flex:1; background:transparent; font-size:14px; color:#111827 }
+.input-wrap{ 
+  position:relative; 
+  display:flex; 
+  align-items:center; 
+  background:#fbfdff; 
+  border:1px solid rgba(16,24,40,0.1); 
+  padding:10px; 
+  border-radius:10px;
+  transition: all 0.2s ease;
+}
+
+.input-wrap:focus-within{ 
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.input-wrap input{ 
+  border:0; 
+  outline:none; 
+  padding:8px 12px; 
+  flex:1; 
+  background:transparent; 
+  font-size:14px; 
+  color:#111827;
+}
 .input-wrap .icon{ width:18px; height:18px; color:#9ca3af; margin-right:8px; flex:0 0 18px }
 .eye-btn{ background:transparent; border:0; cursor:pointer; color:#6b7280; display:flex; align-items:center; padding:0 6px; }
 

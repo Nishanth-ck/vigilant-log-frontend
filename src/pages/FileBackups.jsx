@@ -12,6 +12,8 @@ import {
   CheckCircle2,
   Folder,
 } from "lucide-react";
+import Sidebar from "../components/Sidebar";
+import "../styles/dashboard.css";
 import { 
   getLoggedInUsername, 
   getDeviceId, 
@@ -140,73 +142,29 @@ export default function FileBackups() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(to bottom right, #f8fafc, #dbeafe, #e0e7ff)" }}>
-      {/* Top Navbar */}
-      <nav style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        height: "64px",
-        background: "white",
-        borderBottom: "1px solid #e5e7eb",
-        boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
-        zIndex: 50,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "0 24px"
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <h1 style={{ fontSize: "20px", fontWeight: "bold", background: "linear-gradient(to right, #4f46e5, #3b82f6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0 }}>
-            VigilantLog
-          </h1>
-          <span style={{ fontSize: "14px", color: "#9ca3af" }}>|</span>
-          <span style={{ fontSize: "14px", fontWeight: 500, color: "#4b5563" }}>File Backups</span>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "6px 12px", borderRadius: "8px", background: "#dbeafe", border: "1px solid #93c5fd" }}>
-            <HardDrive size={16} color="#2563eb" />
-            <span style={{ fontSize: "12px", fontWeight: 600, color: "#1e40af" }}>
-              {localFiles.length} Local
-            </span>
+    <div className="dashboard-root">
+      <Sidebar active="file-backups" />
+      <main className="main">
+        <header className="header">
+          <div>
+            <h1 className="header-title">File Backups</h1>
+            <p className="header-subtitle">Manage your local and cloud backups</p>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "6px 12px", borderRadius: "8px", background: "#e0e7ff", border: "1px solid #a5b4fc" }}>
-            <Cloud size={16} color="#6366f1" />
-            <span style={{ fontSize: "12px", fontWeight: 600, color: "#4338ca" }}>
-              {cloudFiles.length} Cloud
-            </span>
+          <div className="header-right">
+            <div className="backup-stats">
+              <div className="backup-stat">
+                <HardDrive size={16} color="#2563eb" />
+                <span>{localFiles.length} Local</span>
+              </div>
+              <div className="backup-stat">
+                <Cloud size={16} color="#6366f1" />
+                <span>{cloudFiles.length} Cloud</span>
+              </div>
+            </div>
           </div>
-        </div>
-      </nav>
+        </header>
 
-      {/* Sidebar */}
-      <aside style={{
-        position: "fixed",
-        top: "64px",
-        left: 0,
-        height: "calc(100vh - 64px)",
-        width: "256px",
-        background: "white",
-        borderRight: "1px solid #e5e7eb",
-        boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
-      }}>
-        <div style={{ padding: "24px" }}>
-          <h1 style={{ fontSize: "24px", fontWeight: "bold", background: "linear-gradient(to right, #4f46e5, #3b82f6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0 }}>
-            VigilantLog
-          </h1>
-        </div>
-        <nav style={{ padding: "0 16px" }}>
-          <a href="/dashboard" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", color: "#374151", textDecoration: "none", marginBottom: "4px" }}>Dashboard</a>
-          {/* <a href="/system-health" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", color: "#374151", textDecoration: "none", marginBottom: "4px" }}>System Health</a> */}
-          <a href="/analysis" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", color: "#374151", textDecoration: "none", marginBottom: "4px" }}>Analysis</a>
-          <a href="/file-backups" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", background: "linear-gradient(to right, #4f46e5, #3b82f6)", color: "white", fontWeight: 500, boxShadow: "0 4px 6px rgba(0,0,0,0.1)", textDecoration: "none" }}>File Backups</a>
-          <a href="/file-settings" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", color: "#374151", textDecoration: "none" }}>File Settings</a>
-        </nav>
-      </aside>
-
-      {/* Main Content */}
-      <main style={{ marginLeft: "256px", marginTop: "64px", padding: "32px" }}>
+        <div className="content">
         
         {/* Empty State - Hostname Not Configured */}
         {!hostnameConfigured && (
@@ -547,6 +505,7 @@ export default function FileBackups() {
         </div>
         </>
         )}
+        </div>
       </main>
     </div>
   );

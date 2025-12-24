@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Mail, User, GraduationCap, Github, Linkedin } from "lucide-react";
+import { Mail, User, GraduationCap } from "lucide-react";
 import "../styles/contact.css";
+import logo from "../assets/logo.png";
 
 export default function ContactUs() {
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -44,7 +45,7 @@ export default function ContactUs() {
       <nav className="contact-nav">
         <div className="contact-nav-inner">
           <div className="contact-brand">
-            <span className="brand-icon">⚡</span>
+            <img src={logo} alt="VigilantLog" className="contact-logo" />
             <span className="brand-text">VigilantLog</span>
           </div>
           <div className="nav-links">
@@ -57,10 +58,7 @@ export default function ContactUs() {
       {/* Hero Section */}
       <section className="contact-hero">
         <div className="contact-hero-content">
-          <h1 className="contact-hero-title">Get In Touch</h1>
-          <p className="contact-hero-subtitle">
-            Meet the team behind VigilantLog
-          </p>
+          <h1 className="contact-hero-title">Meet the team behind VigilantLog</h1>
           <div className="hero-divider"></div>
         </div>
       </section>
@@ -158,7 +156,7 @@ export default function ContactUs() {
       <footer className="contact-footer">
         <div className="footer-content">
           <div className="footer-brand">
-            <span className="brand-icon">⚡</span>
+            <img src={logo} alt="VigilantLog" className="contact-logo" />
             <span className="brand-text">VigilantLog</span>
           </div>
           <p className="footer-text">

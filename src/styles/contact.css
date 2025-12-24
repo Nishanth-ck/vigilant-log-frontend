@@ -52,8 +52,11 @@
   font-weight: 800;
 }
 
-.brand-icon {
-  font-size: 2rem;
+.contact-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.2);
 }
 
 .brand-text {
@@ -85,7 +88,7 @@
 
 .nav-link-primary {
   background: var(--primary-gradient);
-  color: white;
+  color: white !important;
   padding: 0.625rem 1.5rem;
   border-radius: 8px;
   text-decoration: none;
@@ -97,6 +100,7 @@
 .nav-link-primary:hover {
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
+  color: white !important;
 }
 
 /* Hero Section */
@@ -452,7 +456,7 @@
 
 /* Footer */
 .contact-footer {
-  background: var(--text-primary);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
   padding: 3rem 2rem;
   text-align: center;
 }
@@ -474,7 +478,8 @@
 }
 
 .footer-brand .brand-icon {
-  font-size: 2rem;
+  width: 40px;
+  height: 40px;
 }
 
 .footer-text {

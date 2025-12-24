@@ -31,6 +31,17 @@
   box-sizing: border-box;
 }
 
+/* Text Selection Styling */
+::selection {
+  background: rgba(79, 70, 229, 0.2);
+  color: var(--text-primary);
+}
+
+::-moz-selection {
+  background: rgba(79, 70, 229, 0.2);
+  color: var(--text-primary);
+}
+
 .landing-root {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: var(--bg);
@@ -130,8 +141,8 @@
   justify-content: center;
   align-items: center;
   min-height: 90vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: #fff;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 50%, #dbeafe 100%);
+  color: var(--text-primary);
   overflow: hidden;
   padding: 4rem 2rem;
 }
@@ -143,8 +154,8 @@
   right: 0;
   bottom: 0;
   background-image: 
-    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+    radial-gradient(circle at 25% 25%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(59, 130, 246, 0.06) 0%, transparent 50%);
   opacity: 0.6;
 }
 
@@ -160,14 +171,15 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1.25rem;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(79, 70, 229, 0.1);
   backdrop-filter: blur(10px);
   border-radius: 50px;
   font-size: 0.875rem;
   font-weight: 600;
   margin-bottom: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(79, 70, 229, 0.2);
   animation: fadeInDown 0.8s ease-out;
+  color: var(--primary-color);
 }
 
 .hero-title {
@@ -180,7 +192,7 @@
 }
 
 .hero-highlight {
-  background: linear-gradient(135deg, #fff 0%, #e0e7ff 100%);
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -191,7 +203,7 @@
   margin: 0 auto 2.5rem;
   font-size: 1.25rem;
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.95);
+  color: var(--text-secondary);
   animation: fadeInUp 0.8s ease-out 0.4s both;
 }
 
@@ -230,13 +242,13 @@
 }
 
 .btn-outline {
-  border-color: rgba(255, 255, 255, 0.9);
-  color: #fff;
-  background: transparent;
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: white;
 }
 
 .btn-outline:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(79, 70, 229, 0.05);
   transform: translateY(-3px);
 }
 
@@ -256,7 +268,7 @@
   font-size: 1.5rem;
   font-weight: 900;
   margin-bottom: 0.25rem;
-  background: linear-gradient(135deg, #fff 0%, #e0e7ff 100%);
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -266,7 +278,7 @@
 
 .stat-label {
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-secondary);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -275,7 +287,7 @@
 .stat-divider {
   width: 1px;
   height: 40px;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(79, 70, 229, 0.2);
 }
 
 /* Features Section */
@@ -582,11 +594,26 @@
   color: white;
   padding: 6rem 2rem;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="1" fill="white" opacity="0.1"/></svg>');
+  opacity: 0.3;
 }
 
 .cta-inner {
   max-width: 900px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .cta-title {
@@ -625,19 +652,20 @@
 }
 
 .btn-ghost {
-  border-color: rgba(255, 255, 255, 0.9);
+  border-color: white;
   color: white;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.2);
   transform: translateY(-3px);
 }
 
 /* Footer */
 .footer {
-  background: var(--text-primary);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
   color: white;
   padding: 3rem 2rem;
 }

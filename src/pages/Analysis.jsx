@@ -1,6 +1,7 @@
 // src/pages/Analysis.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Sidebar from "../components/Sidebar";
 import "../styles/dashboard.css";
 
 function parseDate(dateString) {
@@ -171,42 +172,6 @@ export default function Analysis() {
         </div>
       </main>
     </div>
-  );
-}
-
-function Sidebar({ active }) {
-  const navItems = [
-    { id: "dashboard", label: "Dashboard", icon: "", href: "/dashboard" },
-    // {
-    //   id: "health",
-    //   label: "System Health",
-    //   icon: "💚",
-    //   href: "/system-health",
-    // },
-    { id: "analysis", label: "Analysis", icon: "", href: "/analysis" },
-    { id: "file-backups", label: "File Backups", icon: "", href: "/file-backups" },
-    { id: "file-settings", label: "File Settings", icon: "", href: "/file-settings" },
-  ];
-
-  return (
-    <aside className="sidebar">
-      <div className="sidebar-brand">
-        {/* <span className="brand-icon">⚡</span> */}
-        <span className="brand-text">VigilantLog</span>
-      </div>
-      <nav className="sidebar-nav">
-        {navItems.map((item) => (
-          <a
-            key={item.id}
-            href={item.href}
-            className={`nav-item ${active === item.id ? "active" : ""}`}
-          >
-            <span className="nav-icon">{item.icon}</span>
-            {item.label}
-          </a>
-        ))}
-      </nav>
-    </aside>
   );
 }
 
