@@ -140,7 +140,7 @@ export default function FileBackups() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(to bottom right, #f9fafb, #fce7f3, #f3e8ff)" }}>
+    <div style={{ minHeight: "100vh", background: "linear-gradient(to bottom right, #f8fafc, #dbeafe, #e0e7ff)" }}>
       {/* Top Navbar */}
       <nav style={{
         position: "fixed",
@@ -158,7 +158,7 @@ export default function FileBackups() {
         padding: "0 24px"
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <h1 style={{ fontSize: "20px", fontWeight: "bold", background: "linear-gradient(to right, #a855f7, #ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0 }}>
+          <h1 style={{ fontSize: "20px", fontWeight: "bold", background: "linear-gradient(to right, #4f46e5, #3b82f6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0 }}>
             VigilantLog
           </h1>
           <span style={{ fontSize: "14px", color: "#9ca3af" }}>|</span>
@@ -171,9 +171,9 @@ export default function FileBackups() {
               {localFiles.length} Local
             </span>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "6px 12px", borderRadius: "8px", background: "#f3e8ff", border: "1px solid #d8b4fe" }}>
-            <Cloud size={16} color="#a855f7" />
-            <span style={{ fontSize: "12px", fontWeight: 600, color: "#7e22ce" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "6px 12px", borderRadius: "8px", background: "#e0e7ff", border: "1px solid #a5b4fc" }}>
+            <Cloud size={16} color="#6366f1" />
+            <span style={{ fontSize: "12px", fontWeight: 600, color: "#4338ca" }}>
               {cloudFiles.length} Cloud
             </span>
           </div>
@@ -192,7 +192,7 @@ export default function FileBackups() {
         boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
       }}>
         <div style={{ padding: "24px" }}>
-          <h1 style={{ fontSize: "24px", fontWeight: "bold", background: "linear-gradient(to right, #a855f7, #ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0 }}>
+          <h1 style={{ fontSize: "24px", fontWeight: "bold", background: "linear-gradient(to right, #4f46e5, #3b82f6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0 }}>
             VigilantLog
           </h1>
         </div>
@@ -200,7 +200,7 @@ export default function FileBackups() {
           <a href="/dashboard" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", color: "#374151", textDecoration: "none", marginBottom: "4px" }}>Dashboard</a>
           {/* <a href="/system-health" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", color: "#374151", textDecoration: "none", marginBottom: "4px" }}>System Health</a> */}
           <a href="/analysis" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", color: "#374151", textDecoration: "none", marginBottom: "4px" }}>Analysis</a>
-          <a href="/file-backups" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", background: "linear-gradient(to right, #a855f7, #ec4899)", color: "white", fontWeight: 500, boxShadow: "0 4px 6px rgba(0,0,0,0.1)", textDecoration: "none" }}>File Backups</a>
+          <a href="/file-backups" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", background: "linear-gradient(to right, #4f46e5, #3b82f6)", color: "white", fontWeight: 500, boxShadow: "0 4px 6px rgba(0,0,0,0.1)", textDecoration: "none" }}>File Backups</a>
           <a href="/file-settings" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", color: "#374151", textDecoration: "none" }}>File Settings</a>
         </nav>
       </aside>
@@ -284,8 +284,8 @@ export default function FileBackups() {
             </div>
             <div style={{ background: "white", borderRadius: "12px", padding: "16px", border: "1px solid #e5e7eb", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <div style={{ padding: "8px", background: "#f3e8ff", borderRadius: "8px" }}>
-                  <Cloud size={20} color="#a855f7" />
+              <div style={{ padding: "8px", background: "#e0e7ff", borderRadius: "8px" }}>
+                <Cloud size={20} color="#6366f1" />
                 </div>
                 <div>
                   <p style={{ fontSize: "12px", color: "#6b7280", fontWeight: 500, margin: 0 }}>Cloud Backups</p>
@@ -302,7 +302,7 @@ export default function FileBackups() {
                 alignItems: "center",
                 gap: "8px",
               padding: "12px 24px",
-              background: "linear-gradient(to right, #a855f7, #ec4899)",
+              background: "linear-gradient(to right, #4f46e5, #3b82f6)",
               color: "white",
               border: "none",
               borderRadius: "12px",
@@ -463,10 +463,10 @@ export default function FileBackups() {
 
         {/* Cloud Backups Card */}
         <div style={{ background: "white", borderRadius: "16px", boxShadow: "0 4px 6px rgba(0,0,0,0.1)", border: "1px solid #e5e7eb", overflow: "hidden" }}>
-          <div style={{ padding: "24px", background: "linear-gradient(to right, #f3e8ff, #e9d5ff)", borderBottom: "1px solid #e5e7eb" }}>
+          <div style={{ padding: "24px", background: "linear-gradient(to right, #e0e7ff, #ddd6fe)", borderBottom: "1px solid #e5e7eb" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <div style={{ padding: "12px", background: "#f3e8ff", borderRadius: "12px" }}>
-                <Cloud size={24} color="#a855f7" />
+              <div style={{ padding: "12px", background: "#e0e7ff", borderRadius: "12px" }}>
+                <Cloud size={24} color="#6366f1" />
               </div>
               <div>
                 <h3 style={{ fontSize: "20px", fontWeight: 600, color: "#111827", margin: 0 }}>
@@ -482,8 +482,8 @@ export default function FileBackups() {
           <div style={{ padding: "24px" }}>
           {cloudFiles.length === 0 ? (
               <div style={{ textAlign: "center", padding: "48px 0" }}>
-                <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "64px", height: "64px", background: "#f3e8ff", borderRadius: "50%", marginBottom: "16px" }}>
-                  <Cloud size={32} color="#c084fc" />
+                <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "64px", height: "64px", background: "#e0e7ff", borderRadius: "50%", marginBottom: "16px" }}>
+                  <Cloud size={32} color="#818cf8" />
                 </div>
                 <h4 style={{ fontSize: "18px", fontWeight: 600, color: "#111827", margin: "0 0 8px 0" }}>
                   No cloud backups yet
@@ -502,15 +502,15 @@ export default function FileBackups() {
                       alignItems: "center",
                       justifyContent: "space-between",
                       padding: "16px",
-                      background: "linear-gradient(to right, #f9fafb, #f3e8ff)",
+                      background: "linear-gradient(to right, #f9fafb, #e0e7ff)",
                       borderRadius: "12px",
                       border: "1px solid #e5e7eb",
                       boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
                     }}
                   >
                     <div style={{ display: "flex", alignItems: "center", gap: "16px", flex: 1, minWidth: 0 }}>
-                      <div style={{ padding: "8px", background: "#f3e8ff", borderRadius: "8px" }}>
-                        <File size={20} color="#a855f7" />
+                      <div style={{ padding: "8px", background: "#e0e7ff", borderRadius: "8px" }}>
+                        <File size={20} color="#6366f1" />
                       </div>
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <p style={{ fontWeight: 500, color: "#111827", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", margin: "0 0 4px 0" }}>
@@ -526,7 +526,7 @@ export default function FileBackups() {
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                         <button
                           onClick={() => downloadFile(file.name, true)}
-                        style={{ padding: "8px", background: "#a855f7", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}
+                        style={{ padding: "8px", background: "#6366f1", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}
                           title="Download"
                         >
                           <Download size={16} />

@@ -238,7 +238,7 @@ export default function FileSettings() {
         padding: "0 24px"
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <h1 style={{ fontSize: "20px", fontWeight: "bold", background: "linear-gradient(to right, #2563eb, #4f46e5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0 }}>
+          <h1 style={{ fontSize: "20px", fontWeight: "bold", background: "linear-gradient(to right, #4f46e5, #3b82f6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0 }}>
             VigilantLog
           </h1>
           <span style={{ fontSize: "14px", color: "#9ca3af" }}>|</span>
@@ -276,7 +276,7 @@ export default function FileSettings() {
         boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
       }}>
         <div style={{ padding: "24px" }}>
-          <h1 style={{ fontSize: "24px", fontWeight: "bold", background: "linear-gradient(to right, #2563eb, #4f46e5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0 }}>
+          <h1 style={{ fontSize: "24px", fontWeight: "bold", background: "linear-gradient(to right, #4f46e5, #3b82f6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0 }}>
             VigilantLog
           </h1>
         </div>
@@ -285,7 +285,7 @@ export default function FileSettings() {
           {/* <a href="/system-health" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", color: "#374151", textDecoration: "none", marginBottom: "4px" }}>System Health</a> */}
           <a href="/analysis" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", color: "#374151", textDecoration: "none", marginBottom: "4px" }}>Analysis</a>
           <a href="/file-backups" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", color: "#374151", textDecoration: "none", marginBottom: "4px" }}>File Backups</a>
-          <a href="/file-settings" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", background: "linear-gradient(to right, #3b82f6, #6366f1)", color: "white", fontWeight: 500, boxShadow: "0 4px 6px rgba(0,0,0,0.1)", textDecoration: "none" }}>File Settings</a>
+          <a href="/file-settings" style={{ display: "block", padding: "12px 16px", borderRadius: "8px", background: "linear-gradient(to right, #4f46e5, #3b82f6)", color: "white", fontWeight: 500, boxShadow: "0 4px 6px rgba(0,0,0,0.1)", textDecoration: "none" }}>File Settings</a>
         </nav>
       </aside>
 
@@ -334,7 +334,7 @@ export default function FileSettings() {
                 alignItems: "center",
                 gap: "8px",
                 padding: "12px 24px",
-                background: "linear-gradient(to right, #2563eb, #4f46e5)",
+                background: "linear-gradient(to right, #4f46e5, #3b82f6)",
                 color: "white",
                 border: "none",
                 borderRadius: "12px",
@@ -476,7 +476,7 @@ export default function FileSettings() {
                 alignItems: "center",
                 gap: "8px",
                 padding: "12px 24px",
-                background: "linear-gradient(to right, #2563eb, #4f46e5)",
+                background: "linear-gradient(to right, #4f46e5, #3b82f6)",
                 color: "white",
                 border: "none",
                 borderRadius: "12px",
@@ -608,7 +608,7 @@ export default function FileSettings() {
                 justifyContent: "center",
                 gap: "8px",
                 padding: "12px 24px",
-                background: "linear-gradient(to right, #2563eb, #4f46e5)",
+                background: "linear-gradient(to right, #4f46e5, #3b82f6)",
                 color: "white",
                 border: "none",
                 borderRadius: "12px",

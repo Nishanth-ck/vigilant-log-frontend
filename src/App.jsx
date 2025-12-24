@@ -16,6 +16,7 @@ import InstallerGuide from "./pages/InstallerGuide";
 import FileBackups from "./pages/FileBackups";
 import AppCrashPage from "./pages/AppCrashPage.jsx";
 import FileSettings from "./pages/FileSettings";
+import ContactUs from "./pages/ContactUs";
 
 
 export default function App() {
@@ -37,6 +38,7 @@ export default function App() {
         <Route path="/analysis/shutdown" element={<AppCrashPage />} />
         <Route path="/analysis/hang" element={<AppCrashPage />} />  
         <Route path="/installer" element={<InstallerGuide />} />
+        <Route path="/contact" element={<ContactUs />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
