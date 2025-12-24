@@ -211,24 +211,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="cta-section">
-        <div className="cta-inner">
-          <h2 className="cta-title">Ready to Monitor Your System?</h2>
-          <p className="cta-description">
-            Start using VigilantLog to help keep your system monitored and protected
-          </p>
-          <div className="cta-buttons">
-            <a href="/register" className="btn btn-large btn-white">
-              <span>Get Started</span>
-              <ChevronRight size={20} />
-            </a>
-            <a href="/contact" className="btn btn-large btn-ghost">
-              Contact Us
-            </a>
-          </div>
-        </div>
-      </section>
-
       <footer className="footer">
         <div className="footer-content">
           <div className="footer-brand">

@@ -243,13 +243,18 @@
 
 .btn-outline {
   border-color: var(--primary-color);
+  border-width: 2px;
   color: var(--primary-color);
   background: white;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .btn-outline:hover {
-  background: rgba(79, 70, 229, 0.05);
+  background: var(--primary-color);
+  color: white;
   transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
 }
 
 .hero-stats {

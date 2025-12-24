@@ -60,7 +60,7 @@ export default function HomePage() {
             <span className="navbar-title">VigilantLog</span>
           </div>
           <div className="navbar-links">
-            <button className="nav-link" onClick={() => navigate("/login")}>
+            <button className="nav-btn-secondary" onClick={() => navigate("/login")}>
               Login
             </button>
             <button className="nav-btn-primary" onClick={() => navigate("/register")}>
@@ -144,22 +144,6 @@ export default function HomePage() {
                 <p className="feature-description">{feature.description}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="cta-section">
-        <div className="cta-container">
-          <div className="cta-content">
-            <h2 className="cta-title">Ready to Protect Your System?</h2>
-            <p className="cta-description">
-              Join the users who trust VigilantLog to keep their systems safe
-            </p>
-            <button className="cta-button" onClick={() => navigate("/register")}>
-              Get Started Now
-              <ArrowRight size={20} />
-            </button>
           </div>
         </div>
       </section>
