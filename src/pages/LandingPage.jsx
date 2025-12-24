@@ -54,7 +54,7 @@ export default function LandingPage() {
               <span>Go to Dashboard</span>
               <ChevronRight size={20} />
             </a>
-            <a href="/installer" className="btn btn-outline">
+            <a href="/installer" className="btn btn-primary">
               <span>Download Installer</span>
             </a>
           </div>

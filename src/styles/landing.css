@@ -356,10 +356,12 @@
 .feature-card:hover {
   transform: translateY(-8px);
   box-shadow: var(--shadow-lg);
+  background: var(--surface);
 }
 
 .feature-card:hover::before {
   opacity: 1;
+  background: var(--surface);
 }
 
 .feature-card.featured {
